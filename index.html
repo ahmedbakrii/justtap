@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JustTap - Coming Soon</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0a;
+      color: #f0e9d2;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .bg-gold {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #1a1100, #b88c15, #3d2b00, #b88c15, #1a1100);
+      background-size: 400% 400%;
+      animation: goldMove 25s ease infinite;
+      filter: blur(90px);
+      z-index: -1;
+    }
+
+    @keyframes goldMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+      background: rgba(30, 25, 10, 0.85);
+      padding: 50px 30px 60px 30px;
+      border-radius: 18px;
+      box-shadow: 0 0 30px 6px #b88c15cc;
+      backdrop-filter: saturate(180%) blur(12px);
+    }
+
+    .logo {
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 10px #d1b354cc);
+    }
+
+    .logo img {
+      max-width: 240px;
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      animation: fadeInLogo 2s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeInLogo {
+      to { opacity: 1; }
+    }
+
+    .slogan {
+      font-weight: 500;
+      font-size: 1rem; /* حجم أصغر */
+      color: #f0e9d2;
+      margin-top: 10px; /* تحت اللوجو */
+      text-align: center; /* في المنتصف بصرياً */
+      text-shadow: 0 0 6px #b88c15bb;
+      margin-bottom: 25px;
+    }
+
+    .title {
+      font-weight: 900;
+      font-size: 3.4rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+      color: #010101; /* اللون المطلوب */
+      text-shadow: 0 0 10px #b88c15cc, 0 0 15px #ffdd55cc;
+    }
+
+    .subtitle {
+      font-weight: 400;
+      font-size: 1.4rem;
+      color: #f7f1d9cc;
+      line-height: 1.6;
+      text-shadow: 0 0 6px #b88c15bb;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 40px 20px 50px 20px;
+      }
+      .title { font-size: 2.8rem; }
+      .subtitle { font-size: 1.1rem; }
+      .logo img { max-width: 160px; }
+      .slogan { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gold"></div>
+
+  <div class="container" role="main">
+    <div class="logo">
+      <img src="https://i.imgur.com/4otVJXf.png" alt="JustTap Logo">
+    </div>
+    <div class="slogan">Enough to Connect</div>
+    <h1 class="title">Coming Soon</h1>
+    <p class="subtitle">
+      We are building a revolutionary experience for seamless NFC communication —
+      JustTap will make connecting simpler, smarter, and more powerful.
+    </p>
+  </div>
+</body>
+</html>
