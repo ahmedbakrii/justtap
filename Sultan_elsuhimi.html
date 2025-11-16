@@ -14,35 +14,35 @@
     min-height: 100vh;
     background-color: #f5f5f5;
     text-align: center;
-    overflow: hidden; /* يمنع السحب الزائد */
   }
 
   .content {
-    flex: 1;
+    flex: 1 0 auto; /* يشغل المساحة المتاحة دون دفع الفوتر للخارج */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2vh 5vw; /* وحدات مرنة */
+    padding: 2vh 5vw;
   }
 
   img.main-image {
-    max-width: 90%;   /* يتناسب مع عرض الشاشة */
+    max-width: 90%;
     max-height: 50vh; /* لا يتجاوز نصف ارتفاع الشاشة */
     height: auto;
     border-radius: 10px;
-    object-fit: contain; /* يحافظ على تناسق الصورة */
+    object-fit: contain;
   }
 
   p {
     margin-top: 2vh;
-    font-size: 6vw; /* حجم نص مرن بالنسبة لعرض الشاشة */
+    font-size: 6vw; /* حجم نص مرن */
     font-weight: bold;
     color: #e74c3c;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   }
 
   footer {
+    flex-shrink: 0; /* يمنع الفوتر من الانكماش */
     width: 100%;
     padding: 1vh 0;
     display: flex;
@@ -59,11 +59,11 @@
 
   @media (max-width: 600px) {
     p {
-      font-size: 8vw; /* نص أكبر قليلاً على الموبايل */
+      font-size: 8vw;
     }
 
     footer img {
-      height: 8vw; /* يظل متناسب */
+      height: 8vw;
     }
   }
 </style>
