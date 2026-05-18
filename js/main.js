@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const selectedColorElement = document.querySelector('input[name="color"]:checked');
             const selectedColor = selectedColorElement ? selectedColorElement.value : "الافتراضي";
             
-            const myWhatsappNumber = "966500000000"; // <--- ضع رقمك هنا للطلبات
+            const myWhatsappNumber = "966576380420"; // <--- ضع رقمك هنا للطلبات
             
             const messageText = `مرحباً Justtap، أود طلب المنتج التالي:\n\n` +
                                 `📦 المنتج: ${productName}\n` +
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
             
-            const myWhatsappNumber = "966500000000"; // <--- ضع رقمك هنا للاستفسارات العامة
+            const myWhatsappNumber = "966576380420"; // <--- ضع رقمك هنا للاستفسارات العامة
             
             const contactText = `📥 *إستفسار جديد من موقع Justtap*\n\n` +
                                 `👤 *اسم العميل:* ${clientName}\n` +
