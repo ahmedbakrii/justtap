@@ -1,125 +1,259 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>justtap - Coming Soon</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background: #0a0a0a;
-      color: #f0e9d2;
-      font-family: 'Poppins', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      overflow-x: hidden;
-    }
-
-    .bg-gold {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(135deg, #1a1100, #b88c15, #3d2b00, #b88c15, #1a1100);
-      background-size: 400% 400%;
-      animation: goldMove 25s ease infinite;
-      filter: blur(90px);
-      z-index: -1;
-    }
-
-    @keyframes goldMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .container {
-      text-align: center;
-      max-width: 480px;
-      width: 100%;
-      background: rgba(30, 25, 10, 0.85);
-      padding: 50px 30px 60px 30px;
-      border-radius: 18px;
-      box-shadow: 0 0 30px 6px #b88c15cc;
-      backdrop-filter: saturate(180%) blur(12px);
-    }
-
-    .logo {
-      margin-bottom: 10px;
-      filter: drop-shadow(0 0 10px #d1b354cc);
-    }
-
-    .logo img {
-      max-width: 240px;
-      width: 100%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      animation: fadeInLogo 2s ease forwards;
-      opacity: 0;
-    }
-
-    @keyframes fadeInLogo {
-      to { opacity: 1; }
-    }
-
-    .slogan {
-      font-weight: 500;
-      font-size: 1rem; /* حجم أصغر */
-      color: #f0e9d2;
-      margin-top: 10px; /* تحت اللوجو */
-      text-align: center; /* في المنتصف بصرياً */
-      text-shadow: 0 0 6px #b88c15bb;
-      margin-bottom: 25px;
-    }
-
-    .title {
-      font-weight: 900;
-      font-size: 3.4rem;
-      letter-spacing: 0.05em;
-      margin-bottom: 16px;
-      color: #010101; /* اللون المطلوب */
-      text-shadow: 0 0 10px #b88c15cc, 0 0 15px #ffdd55cc;
-    }
-
-    .subtitle {
-      font-weight: 400;
-      font-size: 1.4rem;
-      color: #f7f1d9cc;
-      line-height: 1.6;
-      text-shadow: 0 0 6px #b88c15bb;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 40px 20px 50px 20px;
-      }
-      .title { font-size: 2.8rem; }
-      .subtitle { font-size: 1.1rem; }
-      .logo img { max-width: 160px; }
-      .slogan { font-size: 0.9rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Justtap - بطاقات وميداليات NFC الذكية لمشاركة بياناتك بلمسة واحدة وبأسلوب فاخر ومودرن">
+    <meta name="keywords" content="NFC, بطاقة ذكية, Justtap, مشاركة بيانات, بطاقة عمل رقمية">
+    <title>Justtap | الرئيسية - بطاقتك الرقمية بلمسة واحدة</title>
+    
+    <!-- Favicon (أيقونة الموقع) -->
+    <link rel="icon" type="image/png" href="images/logo.png">
+    
+    <!-- Google Fonts (خطوط جوجل - خط Cairo الفاخر) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets (ملفات التنسيق) -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
-  <div class="bg-gold"></div>
 
-  <div class="container" role="main">
-    <div class="logo">
-      <img src="https://i.imgur.com/4otVJXf.png" alt="JustTap Logo">
-    </div>
-    <div class="slogan">Enough to Connect</div>
-    <h1 class="title">Coming Soon</h1>
-   <p class="subtitle">
-  We are building a revolutionary experience for seamless NFC communication.
-</p>
-<p class="subtitle">
-  justtap will make connecting simpler, smarter, and more powerful.
-</p>
+    <!-- Navbar Start (شريط التنقل العلوي) -->
+    <header class="navbar">
+        <div class="container navbar-container">
+            <div class="logo-area">
+                <!-- يمكنك استبدال نص Justtap بصورة الشعار لاحقاً -->
+                <a href="index.html" class="logo">Just<span>tap</span></a>
+            </div>
+            
+            <!-- القائمة الرئيسية للهواتف والحواسب -->
+            <nav class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link active">الرئيسية</a>
+                <a href="products.html" class="nav-link">منتجاتنا</a>
+                <a href="how-it-works.html" class="nav-link">كيف يعمل؟</a>
+                <a href="contact.html" class="nav-link">اتصل بنا</a>
+            </nav>
+            
+            <!-- زر القائمة للهواتف الذكية -->
+            <button class="menu-toggle" id="menuToggle" aria-label="قائمة التنقل">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+    <!-- Navbar End -->
 
-  </div>
+    <!-- Hero Section Start (قسم الواجهة الرئيسية) -->
+    <section class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <span class="hero-badge">مستقبل التواصل هنا</span>
+                <h1 class="hero-title">شارك هويتك بلمسة واحدة.</h1>
+                <p class="hero-subtitle">بطاقات وميداليات Justtap الذكية تتيح لك مشاركة حساباتك، معلومات الاتصال، وعملك فوراً باستخدام تقنية NFC دون الحاجة لأي تطبيق.</p>
+                <div class="hero-buttons">
+                    <a href="products.html" class="btn btn-primary">تسوق الآن</a>
+                    <a href="#how-it-works" class="btn btn-secondary">اكتشف المزيد</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- صورة تعبيرية للمنتج (تستطيع استبدال الرابط بصورتك الخاصة) -->
+                <img src="https://via.placeholder.com/600x500/003366/ffffff?text=Justtap+Premium+Card" alt="Justtap Premium Card" class="floating-animation">
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
+
+    <!-- Features Section Start (قسم المميزات) -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">لماذا Justtap؟</h2>
+                <p class="section-subtitle">صممت بأعلى معايير الجودة لتمنحك مظهراً احترافياً أمام عملائك وأصدقائك</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- الميزة الأولى -->
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3 class="feature-card-title">لا حاجة لتطبيقات</h3>
+                    <p class="feature-card-text">الطرف الآخر لا يحتاج لتثبيت أي تطبيق لقراءة بياناتك، فقط يلمس الهاتف.</p>
+                </div>
+                
+                <!-- الميزة الثانية -->
+                <div class="feature-card">
+                    <div class="feature-icon">💧</div>
+                    <h3 class="feature-card-title">مقاومة للماء والصدمات</h3>
+                    <p class="feature-card-text">مصنوعة من مواد فاخرة وعالية المتانة لتدوم معك مدى الحياة.</p>
+                </div>
+                
+                <!-- الميزة الثالثة -->
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-card-title">آمنة ومحمية</h3>
+                    <p class="feature-card-text">بياناتك مشفرة بالكامل ويمكنك التحكم بما تشاركه وفي أي وقت وبسرعة.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Features Section End -->
+
+    <!-- Products Preview Start (معاينة المنتجات) -->
+    <section class="products-preview">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">منتجاتنا الأكثر مبيعاً</h2>
+                <p class="section-subtitle">اختر الأسلوب الذي يناسب شخصيتك وعملك الفاخر</p>
+            </div>
+            
+            <div class="products-grid">
+                <!-- المنتج الأول: البطاقة -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/400x300/0A2540/ffffff?text=NFC+Smart+Card" alt="بطاقة NFC الذكية">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">بطاقة Justtap الذكية (NFC)</h3>
+                        <p class="product-price">149 ريال سعودي</p>
+                        <a href="product-details.html?product=card" class="btn btn-outline">استكشاف وتخصيص</a>
+                    </div>
+                </div>
+
+                <!-- المنتج الثاني: الميدالية -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/400x300/003366/ffffff?text=NFC+Keychain" alt="ميدالية NFC الذكية">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">ميدالية Justtap الذكية (NFC)</h3>
+                        <p class="product-price">99 ريال سعودي</p>
+                        <a href="product-details.html?product=keychain" class="btn btn-outline">استكشاف وتخصيص</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Products Preview End -->
+
+    <!-- How It Works Section Start (كيف تعمل التكنولوجيا) -->
+    <section id="how-it-works" class="how-it-works-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">كيف تعمل بلمسة واحدة؟</h2>
+                <p class="section-subtitle">ثلاث خطوات بسيطة لبدء مشاركة عالمك الرقمي</p>
+            </div>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3 class="step-title">اطلب منتجك</h3>
+                    <p class="step-text">اختر البطاقة أو الميدالية المفضلة لديك، وقم بتخصيص الاسم واللون.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3 class="step-title">برمج بياناتك</h3>
+                    <p class="step-text">عند وصول المنتج، امسحه واضف روابط حساباتك وأرقامك بسهولة تامة.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3 class="step-title">إلمس وشارك!</h3>
+                    <p class="step-text">قرب المنتج من أي هاتف ذكي، وستظهر بياناتك تلقائياً وبسحر تام.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- How It Works Section End -->
+
+    <!-- Testimonials Section Start (آراء العملاء) -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">ماذا يقول عملاؤنا؟</h2>
+                <p class="section-subtitle">ثقة عملائنا هي سر تميزنا وتقديمنا للأفضل دائماً</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"البطاقة مذهلة جداً واختصرت علي حمل بطاقات العمل الورقية التقليدية. كل من يرى البطاقة ينبهر بالسرعة والتصميم الفخم الشبيه بآبل."</p>
+                    <h4 class="testimonial-author">أحمد الملكي - مستشار أعمال</h4>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"الميدالية الذكية معلقة بمفاتيحي دائماً، أشارك حسابات متجري بلمسة واحدة مع الزبائن في المعارض. فكرة عبقرية وتوفير كبير!"</p>
+                    <h4 class="testimonial-author">سارة القحطاني - رائدة أعمال</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Testimonials Section End -->
+
+    <!-- FAQ Section Start (الأسئلة الشائعة) -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">الأسئلة الشائعة</h2>
+                <p class="section-subtitle">كل ما تود معرفته عن منتجات وقتنيات Justtap</p>
+            </div>
+            
+            <div class="faq-container">
+                <!-- السؤال الأول -->
+                <div class="faq-item">
+                    <button class="faq-question">هل تعمل البطاقة على جميع الهواتف؟</button>
+                    <div class="faq-answer">
+                        <p>نعم، تعمل التقنية مع جميع هواتف الآيفون الحديثة (من آيفون 7 فما فوق) ومعظم هواتف الأندرويد التي تدعم خاصية NFC بشكل تلقائي دون برامج إضافية.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال الثاني -->
+                <div class="faq-item">
+                    <button class="faq-question">هل يحتاج الطرف الآخر لتطبيق ليرى حساباتي؟</button>
+                    <div class="faq-answer">
+                        <p>لا، مطلقاً! الشخص الآخر لا يحتاج لأي تطبيق. بمجرد ملامسة المنتج لهاتفه، ستفتح له صفحة حساباتك فوراً في المتصفح الافتراضي.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال الثالث -->
+                <div class="faq-item">
+                    <button class="faq-question">كيف يمكنني تعديل روابطي بعد الشراء؟</button>
+                    <div class="faq-answer">
+                        <p>ستحصل على لوحة تحكم مجانية وسهلة جداً تمكنك من تعديل أرقامك، روابطك، وصورتك الشخصية في أي وقت وبعدد مرات غير محدود.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- FAQ Section End -->
+
+    <!-- Footer Start (تذييل الصفحة) -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <a href="index.html" class="logo">Just<span>tap</span></a>
+                <p class="footer-description">العلامة التجارية الرائدة لمنتجات NFC الفاخرة والمينيمال في الوطن العربي.</p>
+            </div>
+            <div class="footer-links">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="products.html">منتجاتنا</a></li>
+                    <li><a href="how-it-works.html">كيف يعمل؟</a></li>
+                    <li><a href="contact.html">اتصل بنا</a></li>
+                    <li><a href="privacy-policy.html">سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 جميع الحقوق محفوظة لـ Justtap.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- JavaScript Link -->
+    <script src="js/main.js"></script>
 </body>
 </html>
