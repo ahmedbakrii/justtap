@@ -1,34 +1,23 @@
-// الانتظار حتى تحميل مستند الـ HTML بالكامل لضمان عدم وجود أخطاء
 document.addEventListener("DOMContentLoaded", function() {
 
-    // ==========================================
-    // 1. MOBILE MENU TOGGLE (قائمة الموبايل المنسدلة)
-    // ==========================================
+    // 1. القائمة الجانبية للموبايل (توجل المنيو)
     const menuToggle = document.getElementById("menuToggle");
     const navMenu = document.getElementById("navMenu");
 
-    // التحقق من وجود الأزرار في الصفحة لمنع توقف الأكواد الأخرى
     if (menuToggle && navMenu) {
         menuToggle.addEventListener("click", function() {
-            // إضافة أو إزالة الكلاس open لفتح وإغلاق القائمة بالـ CSS
             navMenu.classList.toggle("open");
-            
-            // تغيير شكل زر الهامبرغر لتأثير تفاعلي بسيط إن أردت لاحقاً
             this.classList.toggle("active");
         });
     }
 
-    // ==========================================
-    // 2. FAQ ACCORDION (قائمة الأسئلة الشائعة المطاطية)
-    // ==========================================
+    // 2. قائمة الأسئلة الشائعة (الأكورديون)
     const faqQuestions = document.querySelectorAll(".faq-question");
-
     faqQuestions.forEach(function(question) {
         question.addEventListener("click", function() {
             const item = this.parentElement;
             const answer = this.nextElementSibling;
 
-            // إغلاق أي أسئلة أخرى مفتوحة للحصول على مظهر نظيف (اختياري)
             document.querySelectorAll(".faq-item").forEach(function(el) {
                 if (el !== item) {
                     el.classList.remove("active");
@@ -36,11 +25,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            // فتح أو إغلاق السؤال الحالي المضغطوط عليه
             item.classList.toggle("active");
-
             if (item.classList.contains("active")) {
-                // تعيين الارتفاع الفعلي للمحتوى الداخلي بديناميكية
                 answer.style.maxHeight = answer.scrollHeight + "px";
             } else {
                 answer.style.maxHeight = null;
@@ -48,43 +34,54 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // ==========================================
-    // 3. WHATSAPP ORDER GENERATOR (منظومة توليد رابط الواتساب الديناميكي)
-    // ==========================================
+    // 3. إرسال طلب شراء منتج عبر الواتساب (من صفحة تفاصيل المنتج)
     const whatsappBtn = document.getElementById("whatsappOrderBtn");
-
     if (whatsappBtn) {
         whatsappBtn.addEventListener("click", function() {
-            // سحب معلومات التخصيص والمنتج والخيارات مباشرة من المدخلات
             const productName = document.getElementById("prodName") ? document.getElementById("prodName").innerText : "منتج Justtap";
             const customerPrintName = document.getElementById("printName") ? document.getElementById("printName").value : "لم يتم التحديد";
-            
-            // سحب اللون المختار من أزرار الراديو
             const selectedColorElement = document.querySelector('input[name="color"]:checked');
             const selectedColor = selectedColorElement ? selectedColorElement.value : "الافتراضي";
-
-            // رقم الواتساب الخاص بك (قم بتغييره هنا إلى رقمك الحقيقي مباشرة شامل رمز الدولة بدون أصفار)
-            const myWhatsappNumber = "966500000000"; 
-
-            // صياغة رسالة الطلب الاحترافية باللغة العربية
+            
+            const myWhatsappNumber = "966500000000"; // <--- ضع رقمك هنا للطلبات
+            
             const messageText = `مرحباً Justtap، أود طلب المنتج التالي:\n\n` +
                                 `📦 المنتج: ${productName}\n` +
                                 `🏷️ الاسم المراد طباعته: ${customerPrintName}\n` +
                                 `🎨 اللون المختار: ${selectedColor}\n\n` +
                                 `يرجى تأكيد الطلب لتزويدكم بتفاصيل الشحن والموقع. شكراً لكم.`;
 
-            // تشفير النص ليكون متوافقاً كرابط إنترنت آمن ومتكامل
             const encodedMessage = encodeURIComponent(messageText);
-
-            // فتح المحادثة المباشرة فوراً في نافذة جديدة بطلب العميل المخصص
             window.open(`https://wa.me/${myWhatsappNumber}?text=${encodedMessage}`, '_blank');
         });
     }
 
-    // ==========================================
-    // 4. DYNAMIC PRODUCT DETAILS LOADER (موزع تفاصيل المنتجات البسيطة)
-    // ==========================================
-    // يقوم هذا الجزء بقراءة اسم المنتج من الرابط لتغيير النصوص تلقائياً في صفحة التفاصيل
+    // 4. إرسال استفسار عام عبر الواتساب (من صفحة اتصل بنا الجديدة)
+    const contactBtn = document.getElementById("contactSubmitBtn");
+    if (contactBtn) {
+        contactBtn.addEventListener("click", function() {
+            const clientName = document.getElementById("contactName") ? document.getElementById("contactName").value.trim() : "";
+            const clientMessage = document.getElementById("contactMessage") ? document.getElementById("contactMessage").value.trim() : "";
+            
+            // التأكد من أن العميل مخلص البيانات ومسابش الخانات فاضية
+            if (clientName === "" || clientMessage === "") {
+                alert("برجاء كتابة الاسم والرسالة أولاً قبل الإرسال.");
+                return;
+            }
+            
+            const myWhatsappNumber = "966500000000"; // <--- ضع رقمك هنا للاستفسارات العامة
+            
+            const contactText = `📥 *إستفسار جديد من موقع Justtap*\n\n` +
+                                `👤 *اسم العميل:* ${clientName}\n` +
+                                `💬 *الرسالة والاستفسار:* \n${clientMessage}\n\n` +
+                                `رابط الرد السريع المباشر عليه.`;
+
+            const encodedContact = encodeURIComponent(contactText);
+            window.open(`https://wa.me/${myWhatsappNumber}?text=${encodedContact}`, '_blank');
+        });
+    }
+
+    // 5. جلب تفاصيل المنتج ديناميكياً بناءً على الرابط النظيف
     const urlParams = new URLSearchParams(window.location.search);
     const productType = urlParams.get('product');
     
@@ -98,13 +95,12 @@ document.addEventListener("DOMContentLoaded", function() {
             prodNameEl.innerText = "ميدالية Justtap الذكية (NFC)";
             prodPriceEl.innerText = "99 ريال سعودي";
             prodDescEl.innerText = "ميدالية فاخرة وعملية مصنوعة من مواد متينة لحمل مفاتيحك ومشاركة حساباتك وموقعك ومعلوماتك بلمسة ذكية واحدة لأي هاتف.";
-            if(prodImgEl) prodImgEl.src = "https://via.placeholder.com/600x500/003366/ffffff?text=NFC+Keychain+Premium";
+            if(prodImgEl) prodImgEl.src = "images/products/keychain-main.png"; 
         } else {
-            // الوضع الافتراضي أو كارت الـ Card
             prodNameEl.innerText = "بطاقة Justtap الذكية (NFC)";
             prodPriceEl.innerText = "149 ريال سعودي";
             prodDescEl.innerText = "بطاقة رقمية فاخرة ومينيمال شبيهة بأسلوب آبل، تطبع باسمك وتعمل بلمسة واحدة لتبهر الجميع وتوفر ثمن الكروت الورقية.";
-            if(prodImgEl) prodImgEl.src = "https://via.placeholder.com/600x500/0A2540/ffffff?text=NFC+Card+Premium";
+            if(prodImgEl) prodImgEl.src = "images/products/card-main.png"; 
         }
     }
 
