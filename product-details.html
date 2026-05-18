@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justtap | تخصيص طلبك الذكي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container navbar-container">
+            <div class="logo-area"><a href="index.html" class="logo">Just<span>tap</span></a></div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">الرئيسية</a>
+                <a href="products.html" class="nav-link active">منتجاتنا</a>
+                <a href="how-it-works.html" class="nav-link">كيف يعمل؟</a>
+                <a href="contact.html" class="nav-link">اتصل بنا</a>
+            </nav>
+            <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="details-container">
+            <div class="details-gallery">
+                <img id="prodImg" src="https://via.placeholder.com/600x500/0A2540/ffffff?text=NFC+Product+Premium" alt="معاينة المنتج">
+            </div>
+            <div class="details-content">
+                <h1 class="details-title" id="prodName">بطاقة Justtap الذكية (NFC)</h1>
+                <div class="details-price" id="prodPrice">149 ريال سعودي</div>
+                <p class="details-description" id="prodDesc">جاري تحميل تفاصيل المنتج...</p>
+                
+                <div class="customization-section">
+                    <div class="form-group">
+                        <label for="printName">الاسم المراد طباعته على المنتج:</label>
+                        <input type="text" id="printName" class="form-control" placeholder="مثال: أحمد الملكي" required>
+                    </div>
+                    <div class="form-group">
+                        <label>اختر لون المنتج الفاخر:</label>
+                        <div class="color-options">
+                            <label class="color-option">
+                                <input type="radio" name="color" value="أسود فاخر" checked>
+                                <span class="color-dot dot-black"></span>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="color" value="أزرق داكن">
+                                <span class="color-dot dot-blue"></span>
+                            </label>
+                            <label class="color-option">
+                                <input type="radio" name="color" value="فضي مطفي">
+                                <span class="color-dot dot-silver"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button id="whatsappOrderBtn" class="btn btn-whatsapp">اطلب الآن عبر واتساب 💬</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand"><a href="index.html" class="logo">Just<span>tap</span></a></div>
+            <div class="footer-bottom"><p>&copy; 2026 Justtap.</p></div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>
