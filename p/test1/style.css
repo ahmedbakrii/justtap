@@ -1,0 +1,50 @@
+:root {
+    --primary: #1a73e8;
+    --bg: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    --text: #1f2937;
+    --card-bg: rgba(255, 255, 255, 0.9);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+
+body { background: var(--bg); min-height: 100vh; display: flex; justify-content: center; padding: 20px 10px; color: var(--text); }
+
+.card { background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; padding-bottom: 20px; }
+
+/* زر تغيير اللغة */
+.lang-toggle { position: absolute; top: 15px; left: 15px; background: rgba(0,0,0,0.5); color: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 18px; z-index: 10; backdrop-filter: blur(5px); transition: 0.3s; }
+[dir="ltr"] .lang-toggle { left: auto; right: 15px; }
+.lang-toggle:hover { background: var(--primary); }
+
+.cover { width: 100%; height: 150px; background-size: cover; background-position: center; }
+
+.avatar-container { width: 120px; height: 120px; margin: -60px auto 15px; }
+.avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+.info { text-align: center; padding: 0 20px; }
+.info h1 { font-size: 24px; margin-bottom: 5px; }
+.info h3 { font-size: 15px; color: var(--primary); margin-bottom: 10px; }
+.info p { font-size: 14px; color: #4b5563; margin-bottom: 20px; line-height: 1.6; }
+
+.btn-save { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--primary); color: #fff; border: none; width: 85%; margin: 0 auto 20px; padding: 12px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+.btn-save:active { transform: scale(0.98); }
+
+.quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 20px; margin-bottom: 25px; }
+.action { display: flex; flex-direction: column; align-items: center; padding: 10px; background: #fff; border-radius: 12px; text-decoration: none; color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: 0.2s; }
+.action:active { background: #f9fafb; }
+.action i { font-size: 20px; margin-bottom: 5px; }
+.action span { font-size: 12px; font-weight: 600; }
+.action.phone i { color: #2ecc71; }
+.action.whatsapp i { color: #25d366; }
+.action.email i { color: #e74c3c; }
+
+.social-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 15px; color: #6b7280; }
+.socials { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; padding: 0 20px; }
+.socials a { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; background: #fff; color: var(--text); text-decoration: none; font-size: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: 0.3s; }
+.socials a:hover, .socials a:active { transform: translateY(-3px); color: #fff; background: var(--primary); }
+
+/* تنسيقات حقوق الملكية (الفوتر) */
+.footer { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.05); font-size: 12px; color: #9ca3af; font-weight: 600; }
+.footer-logo { height: 22px; object-fit: contain; transition: 0.2s; cursor: pointer; }
+.footer a { display: flex; align-items: center; text-decoration: none; }
+.footer a:hover .footer-logo { transform: scale(1.05); }
