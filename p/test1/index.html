@@ -3,49 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>البروفايل الرقمي</title>
+    <title>JustTap</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="card">
-        <!-- زر تغيير اللغة -->
         <button class="lang-toggle" onclick="toggleLanguage()"><i class="fa-solid fa-globe"></i></button>
 
-        <!-- الصور -->
         <div class="cover" id="cover-img"></div>
         <div class="avatar-container">
             <img src="" alt="Profile" class="avatar" id="profile-img">
         </div>
 
-        <!-- البيانات النصية -->
         <div class="info">
             <h1 id="name"></h1>
             <h3 id="job-title"></h3>
             <p id="bio"></p>
         </div>
 
-        <!-- زر حفظ جهة الاتصال -->
+        <div class="quick-actions">
+            <a href="" id="link-phone" class="action"><i class="fa-solid fa-phone"></i></a>
+            <a href="" id="link-email" class="action"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+
         <button class="btn-save" onclick="downloadVCard()">
             <i class="fa-solid fa-user-plus"></i> <span id="save-text"></span>
         </button>
 
-        <!-- أزرار الاتصال السريع -->
-        <div class="quick-actions">
-            <a href="" id="link-phone" class="action phone"><i class="fa-solid fa-phone"></i> <span id="call-text"></span></a>
-            <a href="" id="link-whatsapp" target="_blank" class="action whatsapp"><i class="fa-brands fa-whatsapp"></i> <span id="wa-text"></span></a>
-            <a href="" id="link-email" class="action email"><i class="fa-solid fa-envelope"></i> <span id="email-text"></span></a>
+        <div class="social-wrapper">
+            <div class="socials" id="social-container"></div>
         </div>
 
-        <div class="social-title" id="social-title-text"></div>
-        
-        <!-- حاوية السوشيال ميديا -->
-        <div class="socials" id="social-container"></div>
-
-        <!-- حقوق الملكية (الفوتر) -->
         <div class="footer">
             <span id="powered-text"></span>
             <a href="https://jus-tt-ap.com" target="_blank">
