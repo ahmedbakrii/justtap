@@ -3,22 +3,23 @@
 // ==========================================
 const profileData = {
     images: {
-        cover: "images/cover.jpg",                           // صورة الغلاف من مجلد الشخص
-        profile: "images/profile.jpg",                       // الصورة الشخصية من مجلد الشخص
-        logo: "https://jus-tt-ap.com/images/logo.png"        // رابط اللوجو الثابت من موقعك الأساسي
+        cover: "images/cover.jpg",                           
+        profile: "images/profile.jpg",                       
+        logo: "https://jus-tt-ap.com/images/logo.png" // رابط لوجو موقعك الأساسي
     },
     contact: {
         phone: "+966500000000",      // رقم الهاتف (بالمفتاح الدولي وعلامة +)
-        whatsapp: "966500000000",    // رقم الواتساب (بالمفتاح الدولي بدون +)
         email: "magd@example.com"    // الإيميل
     },
+    // السوشيال ميديا (اترك الرابط فارغاً "" ولن يظهر في الكارت)
     socials: {
-        linkedin: "https://linkedin.com/in/yourprofile",
-        twitter: "",                 // اترك الرابط فارغاً لإخفاء الأيقونة
         instagram: "https://instagram.com/yourprofile",
-        facebook: "",                
-        snapchat: "",
-        tiktok: "",
+        twitter: "https://x.com/yourprofile",                 
+        snapchat: "https://snapchat.com/add/yourprofile",
+        linkedin: "https://linkedin.com/in/yourprofile",
+        facebook: "https://facebook.com/yourprofile",                
+        whatsapp: "966500000000",    // رقم الواتساب بدون + (سيظهر مع السوشيال ميديا)
+        tiktok: "https://tiktok.com/@yourprofile",
         website: "https://jus-tt-ap.com"
     },
     // البيانات باللغة العربية
@@ -27,10 +28,6 @@ const profileData = {
         job: "أخصائي صحة وسلامة مهنية (HSE)",
         bio: "متخصص في إدارة المخاطر الصناعية وتطبيق معايير السلامة العالمية في بيئات العمل لضمان إنتاجية آمنة ومستدامة.",
         saveContact: "حفظ جهة الاتصال",
-        call: "اتصال",
-        whatsapp: "واتساب",
-        email: "إيميل",
-        socialTitle: "تواصل معي عبر المنصات",
         poweredBy: "بدعم من"
     },
     // البيانات باللغة الإنجليزية
@@ -39,10 +36,6 @@ const profileData = {
         job: "HSE Specialist",
         bio: "Specialized in industrial risk management and implementing global safety standards in work environments.",
         saveContact: "Save Contact",
-        call: "Call",
-        whatsapp: "WhatsApp",
-        email: "Email",
-        socialTitle: "Connect With Me",
         poweredBy: "Powered by"
     }
 };
@@ -51,33 +44,42 @@ const profileData = {
 // 2. كود التشغيل (لا تقم بتعديل ما بالأسفل)
 // ==========================================
 
-let currentLang = 'ar'; // اللغة الافتراضية
+let currentLang = 'ar'; 
 
 const socialIcons = {
-    linkedin: "fa-brands fa-linkedin-in",
-    twitter: "fa-brands fa-x-twitter",
     instagram: "fa-brands fa-instagram",
-    facebook: "fa-brands fa-facebook-f",
+    twitter: "fa-brands fa-x-twitter",
     snapchat: "fa-brands fa-snapchat",
+    linkedin: "fa-brands fa-linkedin-in",
+    facebook: "fa-brands fa-facebook-f",
+    whatsapp: "fa-brands fa-whatsapp",
     tiktok: "fa-brands fa-tiktok",
     website: "fa-solid fa-globe"
 };
 
 function initProfile() {
+    // تركيب الصور
     document.getElementById('cover-img').style.backgroundImage = `url('${profileData.images.cover}')`;
     document.getElementById('profile-img').src = profileData.images.profile;
     document.getElementById('footer-logo-img').src = profileData.images.logo;
 
+    // أزرار الاتصال العلوية (الهاتف والإيميل)
     document.getElementById('link-phone').href = `tel:${profileData.contact.phone}`;
-    document.getElementById('link-whatsapp').href = `https://wa.me/${profileData.contact.whatsapp}`;
     document.getElementById('link-email').href = `mailto:${profileData.contact.email}`;
 
+    // شبكة السوشيال ميديا
     const socialContainer = document.getElementById('social-container');
     socialContainer.innerHTML = '';
+    
     for (const [network, url] of Object.entries(profileData.socials)) {
-        if (url.trim() !== "") {
+        if (url && url.trim() !== "") {
             const a = document.createElement('a');
-            a.href = url;
+            // معالجة الواتساب ليفتح المحادثة مباشرة
+            if (network === 'whatsapp') {
+                a.href = `https://wa.me/${url}`;
+            } else {
+                a.href = url;
+            }
             a.target = "_blank";
             a.innerHTML = `<i class="${socialIcons[network]}"></i>`;
             socialContainer.appendChild(a);
@@ -101,20 +103,19 @@ function applyLanguage() {
     document.getElementById('job-title').textContent = data.job;
     document.getElementById('bio').textContent = data.bio;
     document.getElementById('save-text').textContent = data.saveContact;
-    document.getElementById('call-text').textContent = data.call;
-    document.getElementById('wa-text').textContent = data.whatsapp;
-    document.getElementById('email-text').textContent = data.email;
-    document.getElementById('social-title-text').textContent = data.socialTitle;
     document.getElementById('powered-text').textContent = data.poweredBy;
 }
 
 function downloadVCard() {
     const data = profileData[currentLang];
+    // إذا كان الواتساب موجوداً نضعه في الـ VCard أيضاً
+    const waPhone = profileData.socials.whatsapp ? `\nTEL;TYPE=CELL,VOICE:+${profileData.socials.whatsapp}` : '';
+    
     const vcard = `BEGIN:VCARD
 VERSION:3.0
 FN;CHARSET=UTF-8:${data.name}
 N;CHARSET=UTF-8:;${data.name};;;
-TEL;TYPE=WORK,VOICE:${profileData.contact.phone}
+TEL;TYPE=WORK,VOICE:${profileData.contact.phone}${waPhone}
 EMAIL;TYPE=PREF,INTERNET:${profileData.contact.email}
 TITLE;CHARSET=UTF-8:${data.job}
 URL:${profileData.socials.website}
@@ -131,5 +132,4 @@ END:VCARD`;
     URL.revokeObjectURL(url);
 }
 
-// تشغيل الوظائف بمجرد تحميل الملف
 window.onload = initProfile;
