@@ -25,45 +25,37 @@
 
         .container { max-width: 1100px; margin: 0 auto; }
         
-        /* الهيدر مرن للموبايل */
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border); gap: 10px; }
         .logo { font-size: 22px; font-weight: 700; color: #fff; }
         .logo span { color: var(--accent); }
         .btn-logout { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 6px 12px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.3s; white-space: nowrap; }
         .btn-logout:hover { background: var(--danger); color: #fff; }
 
-        /* شبكة العرض: عمودين على الكمبيوتر وعمود واحد على الموبايل */
         .dashboard-grid { display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: start; }
         
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; }
         .card-title { font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: #fff; }
         .card-title i { color: var(--accent); }
 
-        /* تقسيم خانات الإدخال */
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-bottom: 15px; }
         .input-group { display: flex; flex-direction: column; gap: 6px; }
         .input-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
         .input-group input, .input-group textarea { background: var(--bg-input); border: 1px solid var(--border); border-radius: 10px; padding: 12px; color: #fff; outline: none; font-size: 13px; width: 100%; transition: 0.3s; }
         .input-group input:focus, .input-group textarea:focus { border-color: var(--accent); }
         
-        /* عناوين الأقسام */
         .section-title { font-size: 14px; font-weight: 700; margin: 25px 0 12px; color: var(--accent); border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
         
-        /* خانات السوشيال ميديا */
         .social-input-wrapper { display: flex; align-items: center; background: var(--bg-input); border: 1px solid var(--border); border-radius: 10px; padding: 0 12px; margin-bottom: 12px; }
         .social-input-wrapper i { font-size: 16px; width: 25px; text-align: center; }
         .social-input-wrapper input { background: transparent; border: none; flex: 1; padding: 12px 8px; color: #fff; outline: none; font-size: 13px; width: 100%; }
 
-        /* ألوان أيقونات السوشيال */
         .fa-whatsapp { color: #25D366; } .fa-instagram { color: #E1306C; } .fa-tiktok { color: #fff; }
         .fa-linkedin { color: #0A66C2; } .fa-x-twitter { color: #fff; } .fa-youtube { color: #FF0000; } .fa-snapchat { color: #FFFC00; }
 
-        /* زر الحفظ الفخم */
         .btn-save { background: var(--accent); color: #000; border: none; width: 100%; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 15px; }
         .btn-save:hover { background: var(--accent-hover); }
         .btn-save:disabled { background: var(--text-muted); cursor: not-allowed; }
 
-        /* 📱 تصميم شاشة المعاينة الحية (Live Preview) */
         .preview-sticky { position: sticky; top: 20px; }
         .phone-mockup { background: #fff; color: #111827; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 4px solid #374151; min-height: 500px; padding-bottom: 20px; }
         .p-cover { width: 100%; height: 120px; background: #e5e7eb; background-size: cover; background-position: center; }
@@ -78,17 +70,15 @@
         .p-social-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px 20px; }
         .p-social-icon { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: #f3f4f6; border-radius: 50%; font-size: 18px; text-decoration: none; display: none; }
 
-        /* شاشة التحميل الكاملة */
         .screen-loader { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg-main); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
 
-        /* 📱 تعديلات خاصة بالموبايل فقط ليكون مرن وطحن */
         @media (max-width: 768px) {
-            .dashboard-grid { grid-template-columns: 1fr; } /* تحويل لعمود واحد */
+            .dashboard-grid { grid-template-columns: 1fr; } 
             body { padding: 10px; }
             .card { padding: 15px; border-radius: 15px; }
             header { margin-bottom: 15px; }
             .logo { font-size: 18px; }
-            .preview-sticky { position: static; order: -1; margin-bottom: 25px; } /* المعاينة تطلع فوق الفورم في الموبايل عشان يشوف وهو بيكتب */
+            .preview-sticky { position: static; order: -1; margin-bottom: 25px; } 
         }
     </style>
 </head>
@@ -228,7 +218,7 @@
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-        // ⚠️ ضع هنا بيانات مشروعك الحقيقية بالكامل لتفعيل الربط الفوري
+        // ⚠️ ضع بياناتك هنا ⚠️
     const firebaseConfig = {
   apiKey: "AIzaSyAfpew-RjS5kUjpRK6SGpkCpetrioLL2oE",
   authDomain: "jus-tt-ap.firebaseapp.com",
@@ -248,33 +238,24 @@
         let base64Avatar = "";
         let base64Cover = "";
 
-        // دالة لتحديث المعاينة النصية فورياً أثناء الكتابة
         function syncPreview() {
             document.getElementById('p-name-view').innerText = document.getElementById('user-name').value.trim() || "اسم العميل";
             document.getElementById('p-title-view').innerText = document.getElementById('user-title').value.trim() || "المسمى الوظيفي";
             document.getElementById('p-company-view').innerText = document.getElementById('user-company').value.trim() || "اسم الشركة";
             document.getElementById('p-bio-view').innerText = document.getElementById('user-bio').value.trim() || "النبذة الشخصية تظهر هنا بشكل أنيق ومتناسق...";
             
-            // تحديث أيقونات السوشيال ميديا في المعاينة
             const socials = ['whatsapp', 'instagram', 'tiktok', 'linkedin', 'twitter', 'snapchat', 'youtube'];
             socials.forEach(id => {
                 const val = document.getElementById(`link-${id}`).value.trim();
                 const iconEl = document.getElementById(`pv-${id}`);
-                if(val) {
-                    iconEl.style.display = 'flex';
-                } else {
-                    iconEl.style.display = 'none';
-                }
+                if(val) iconEl.style.display = 'flex';
+                else iconEl.style.display = 'none';
             });
         }
 
-        // ربط أحداث الكتابة بالمزامنة الفورية
         const allInputs = document.querySelectorAll('input[type="text"], textarea');
-        allInputs.forEach(input => {
-            input.addEventListener('input', syncPreview);
-        });
+        allInputs.forEach(input => { input.addEventListener('input', syncPreview); });
 
-        // مراقبة حالة تسجيل الدخول وتعبئة البيانات المسبقة
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUID = user.uid;
@@ -284,12 +265,10 @@
 
                     if (docSnap.exists()) {
                         const data = docSnap.data();
-                        
                         document.getElementById('user-name').value = data.name || "";
                         document.getElementById('user-title').value = data.title || "";
                         document.getElementById('user-company').value = data.company || "";
                         document.getElementById('user-bio').value = data.bio || "";
-                        
                         base64Avatar = data.avatar || "";
                         base64Cover = data.cover || "";
 
@@ -305,8 +284,6 @@
                             document.getElementById('link-snapchat').value = data.links.snapchat || "";
                             document.getElementById('link-youtube').value = data.links.youtube || "";
                         }
-                        
-                        // تشغيل المزامنة فور جلب البيانات لتعبئة كارت المعاينة
                         syncPreview();
                     }
                 } catch (err) {
@@ -319,72 +296,5 @@
             }
         });
 
-        // تحويل الصور ومزامنتها فوراً في المعاينة قبل الضغط على حفظ
-        const toBase64 = file => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-
-        document.getElementById('upload-avatar').addEventListener('change', async (e) => {
-            if (e.target.files[0]) {
-                base64Avatar = await toBase64(e.target.files[0]);
-                document.getElementById('p-avatar-view').src = base64Avatar; // تحديث فوري في الموبايل
-            }
-        });
-
-        document.getElementById('upload-cover').addEventListener('change', async (e) => {
-            if (e.target.files[0]) {
-                base64Cover = await toBase64(e.target.files[0]);
-                document.getElementById('p-cover-view').style.backgroundImage = `url(${base64Cover})`; // تحديث فوري في الموبايل
-            }
-        });
-
-        // زر الحفظ الذكي (setDoc + merge)
-        document.getElementById('dashboard-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!currentUID) return alert("خطأ في تحديد هوية العميل!");
-
-            const btnSave = document.getElementById('btn-save');
-            btnSave.disabled = true;
-            btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري حفظ البيانات الفخمة...';
-
-            const updatedData = {
-                name: document.getElementById('user-name').value.trim(),
-                title: document.getElementById('user-title').value.trim(),
-                company: document.getElementById('user-company').value.trim(),
-                bio: document.getElementById('user-bio').value.trim(),
-                avatar: base64Avatar,
-                cover: base64Cover,
-                links: {
-                    whatsapp: document.getElementById('link-whatsapp').value.trim(),
-                    instagram: document.getElementById('link-instagram').value.trim(),
-                    tiktok: document.getElementById('link-tiktok').value.trim(),
-                    linkedin: document.getElementById('link-linkedin').value.trim(),
-                    twitter: document.getElementById('link-twitter').value.trim(),
-                    snapchat: document.getElementById('link-snapchat').value.trim(),
-                    youtube: document.getElementById('link-youtube').value.trim()
-                }
-            };
-
-            try {
-                const docRef = doc(db, "users", currentUID);
-                await setDoc(docRef, updatedData, { merge: true });
-                alert("تم حفظ وتحديث كارتك بنجاح وبشكل فخم يا هندسة! 🎉");
-            } catch (error) {
-                console.error("Save Error:", error);
-                alert("حدث خطأ أثناء الحفظ: " + error.message);
-            } finally {
-                btnSave.disabled = false;
-                btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ وتحديث البيانات';
-            }
-        });
-
-        // تسجيل الخروج
-        document.getElementById('btn-logout').addEventListener('click', () => {
-            signOut(auth).then(() => { window.location.href = "login.html"; });
-        });
-    </script>
-</body>
-</html>
+        // 🌟 دالة السحر: ضغط الصور تلقائياً لتقليل حجمها قبل الحفظ 🌟
+        const compressImage = (file, maxWidth = 800
