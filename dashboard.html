@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | JustTap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1a73e8; --bg: #f8f9fa; --card-bg: #ffffff; --text: #333333; --border: #e0e0e0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 20px 10px; display: flex; justify-content: center; }
+        .container { background: var(--card-bg); width: 100%; max-width: 600px; border-radius: 16px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h2 { text-align: center; margin-bottom: 25px; color: var(--primary); font-weight: 700; }
+        .section-title { font-size: 16px; font-weight: bold; margin: 20px 0 10px; padding-bottom: 5px; border-bottom: 2px solid var(--bg); color: #555; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; }
+        input[type="text"], textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
+        input[type="text"]:focus, textarea:focus { border-color: var(--primary); }
+        .input-with-icon { position: relative; }
+        .input-with-icon i { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #888; }
+        .input-with-icon input { padding-right: 40px; }
+        
+        .fa-whatsapp { color: #25d366; } .fa-instagram { color: #e1306c; } .fa-snapchat { color: #fffc00; text-shadow: 0 0 1px #000; }
+        .fa-linkedin-in { color: #0077b5; } .fa-x-twitter { color: #000000; } .fa-facebook-f { color: #1877f2; }
+        .fa-tiktok { color: #000000; } .fa-globe { color: var(--primary); }
+
+        .upload-section { background: #f0f7ff; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+        .avatar-preview { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; background: #ddd; border: 2px solid #fff; }
+        .cover-preview { width: 100%; height: 120px; background: #ddd; border-radius: 8px; background-size: cover; background-position: center; margin-bottom: 10px; }
+        .upload-btn { display: inline-block; background: #fff; border: 1px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; margin-top: 5px; }
+        
+        .btn-save { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-save:disabled { background: #ccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>تحديث بيانات الكارت ✨</h2>
+
+    <div class="section-title">الصور والغلاف</div>
+    <div class="upload-section">
+        <label>صورة الغلاف (Cover Photo)</label>
+        <div id="cover-preview" class="cover-preview"></div>
+        <label class="upload-btn" for="cover-file">اختيار صورة الغلاف</label>
+        <input type="file" id="cover-file" accept="image/*" style="display: none;">
+    </div>
+
+    <div class="upload-section" style="display: flex; align-items: center; gap: 15px;">
+        <img src="https://via.placeholder.com/70" id="avatar-preview" class="avatar-preview" alt="Preview">
+        <div>
+            <label>الصورة الشخصية (Avatar)</label><br>
+            <label class="upload-btn" for="avatar-file">اختيار الصورة</label>
+            <input type="file" id="avatar-file" accept="image/*" style="display: none;">
+        </div>
+    </div>
+
+    <div class="section-title">البيانات الأساسية</div>
+    <div class="form-group">
+        <label>الاسم الكامل</label>
+        <input type="text" id="full-name" placeholder="مثال: مهندس مجد">
+    </div>
+    <div class="form-group">
+        <label>المسمى الوظيفي</label>
+        <input type="text" id="job-title" placeholder="مثال: HSE Officer">
+    </div>
+
+    <div class="section-title">م مواقع التواصل (اللي هتسيبه فاضي مش هيظهر)</div>
+    
+    <div class="form-group">
+        <label>رقم الواتساب (بدون +)</label>
+        <div class="input-with-icon"><i class="fa-brands fa-whatsapp"></i><input type="text" id="social-whatsapp" dir="ltr"></div>
+    </div>
+    <div class="form-group">
+        <label>إنستجرام (اسم المستخدم)</label>
+        <div class="input-with-icon"><i class="fa-brands fa-instagram"></i><input type="text" id="social-instagram" dir="ltr"></div>
+    </div>
+    <div class="form-group">
+        <label>سناب شات (اسم المستخدم)</label>
+        <div class="input-with-icon"><i class="fa-brands fa-snapchat"></i><input type="text" id="social-snapchat" dir="ltr"></div>
+    </div>
+    <div class="form-group">
+        <label>رابط لينكد إن كاملاً</label>
+        <div class="input-with-icon"><i class="fa-brands fa-linkedin-in"></i><input type="text" id="social-linkedin" dir="ltr"></div>
+    </div>
+    <div class="form-group">
+        <label>حساب X / تويتر</label>
+        <div class="input-with-icon"><i class="fa-brands fa-x-twitter"></i><input type="text" id="social-twitter" dir="ltr"></div>
+    </div>
+    <div class="form-group">
+        <label>رابط فيسبوك كاملاً</label>
+        <div class="input-with-icon"><i class="fa-brands fa-facebook-f"></i><input type="text" id="social-facebook" dir="ltr"></div>
+    </div>
+    <div class="form-group">
+        <label>تيك توك</label>
+        <div class="input-with-icon"><i class="fa-brands fa-tiktok"></i><input type="text" id="social-tiktok" dir="ltr"></div>
+    </div>
+    <div class="form-group">
+        <label>الموقع الإلكتروني</label>
+        <div class="input-with-icon"><i class="fa-solid fa-globe"></i><input type="text" id="social-website" dir="ltr"></div>
+    </div>
+
+    <button class="btn-save" id="btn-save">حفظ وتحديث الكارت</button>
+</div>
+
+<script type="module">
+    import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+    import { auth, db } from "./firebase-config.js";
+
+    let currentUserId = null;
+    let base64ImageString = "";
+    let base64CoverString = "";
+
+    const inputs = {
+        name: document.getElementById('full-name'),
+        title: document.getElementById('job-title'),
+        whatsapp: document.getElementById('social-whatsapp'),
+        instagram: document.getElementById('social-instagram'),
+        snapchat: document.getElementById('social-snapchat'),
+        linkedin: document.getElementById('social-linkedin'),
+        twitter: document.getElementById('social-twitter'),
+        facebook: document.getElementById('social-facebook'),
+        tiktok: document.getElementById('social-tiktok'),
+        website: document.getElementById('social-website')
+    };
+    
+    const avatarFile = document.getElementById('avatar-file');
+    const avatarPreview = document.getElementById('avatar-preview');
+    const coverFile = document.getElementById('cover-file');
+    const coverPreview = document.getElementById('cover-preview');
+    const saveBtn = document.getElementById('btn-save');
+
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            currentUserId = user.uid;
+            await loadUserData(currentUserId);
+        } else {
+            window.location.href = "login.html";
+        }
+    });
+
+    async function loadUserData(uid) {
+        try {
+            const docSnap = await getDoc(doc(db, "users", uid));
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                inputs.name.value = data.name || "";
+                inputs.title.value = data.title || "";
+                
+                if (data.avatar) { avatarPreview.src = data.avatar; base64ImageString = data.avatar; }
+                if (data.cover) { coverPreview.style.backgroundImage = `url('${data.cover}')`; base64CoverString = data.cover; }
+                
+                if (data.links) {
+                    inputs.whatsapp.value = data.links.whatsapp || "";
+                    inputs.instagram.value = data.links.instagram || "";
+                    inputs.snapchat.value = data.links.snapchat || "";
+                    inputs.linkedin.value = data.links.linkedin || "";
+                    inputs.twitter.value = data.links.twitter || "";
+                    inputs.facebook.value = data.links.facebook || "";
+                    inputs.tiktok.value = data.links.tiktok || "";
+                    inputs.website.value = data.links.website || "";
+                }
+            }
+        } catch (error) { console.error(error); }
+    }
+
+    avatarFile.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => { avatarPreview.src = event.target.result; base64ImageString = event.target.result; };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    coverFile.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => { coverPreview.style.backgroundImage = `url('${event.target.result}')`; base64CoverString = event.target.result; };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    saveBtn.addEventListener('click', async () => {
+        saveBtn.innerText = "جاري الحفظ..."; saveBtn.disabled = true;
+        try {
+            const userData = {
+                name: inputs.name.value.trim(),
+                title: inputs.title.value.trim(),
+                avatar: base64ImageString,
+                cover: base64CoverString,
+                links: {
+                    whatsapp: inputs.whatsapp.value.replace(/[^0-9]/g, ''),
+                    instagram: inputs.instagram.value.trim(),
+                    snapchat: inputs.snapchat.value.trim(),
+                    linkedin: inputs.linkedin.value.trim(),
+                    twitter: inputs.twitter.value.trim(),
+                    facebook: inputs.facebook.value.trim(),
+                    tiktok: inputs.tiktok.value.trim().replace('@', ''),
+                    website: inputs.website.value.trim()
+                }
+            };
+            await setDoc(doc(db, "users", currentUserId), userData, { merge: true });
+            alert("تم الحفظ بنجاح! روح شوف كارتك بقى 🚀");
+        } catch (error) { alert("حدث خطأ."); } 
+        finally { saveBtn.innerText = "حفظ وتحديث الكارت"; saveBtn.disabled = false; }
+    });
+</script>
+</body>
+</html>

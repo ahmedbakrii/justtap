@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="html-tag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البروفايل الرقمي | JustTap</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --primary: #000000; --bg: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); --text: #1f2937; --card-bg: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: var(--bg); min-height: 100vh; display: flex; justify-content: center; padding: 20px 10px; color: var(--text); }
+        
+        /* شاشات التحميل والخطأ */
+        #loading-screen, #error-screen { text-align: center; font-size: 18px; font-weight: bold; color: #555; align-self: center; }
+        #error-screen { color: #dc3545; display: none; }
+        #error-screen i { font-size: 50px; margin-bottom: 15px; }
+
+        .card { background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); position: relative; padding-bottom: 20px; display: none; /* مخفي لحين تحميل البيانات */ }
+
+        .cover { width: 100%; height: 160px; background-size: cover; background-position: center; }
+
+        .avatar-container { width: 110px; height: 110px; margin: -55px auto 15px; }
+        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #fff; }
+
+        .info { text-align: center; padding: 0 20px; margin-bottom: 20px; }
+        .info h1 { font-size: 24px; margin-bottom: 5px; font-weight: 700; color: #000; }
+        .info h3 { font-size: 14px; color: #6b7280; font-weight: 600; margin-bottom: 10px; }
+        .info p { font-size: 13px; color: #4b5563; line-height: 1.6; }
+
+        .action-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; }
+        .btn-action { display: flex; align-items: center; justify-content: center; gap: 8px; border: none; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s; flex: 1; max-width: 170px; }
+        .btn-action:active { transform: scale(0.98); }
+        .btn-save { background: #000; color: #fff; }
+        .btn-share { background: #f3f4f6; color: #000; border: 1px solid #ddd; }
+
+        .social-wrapper { background: #f4f4f5; margin: 0 20px; padding: 15px; border-radius: 20px; }
+        .socials { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .socials a { display: flex; align-items: center; justify-content: center; background: #ffffff; height: 55px; border-radius: 12px; text-decoration: none; font-size: 24px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); transition: transform 0.2s; color: #000 !important; }
+        .socials a:active { transform: scale(0.95); background: #f9fafb; }
+
+        .footer { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 25px; padding-top: 15px; font-size: 12px; color: #9ca3af; font-weight: 600; }
+        .footer-logo { height: 20px; object-fit: contain; }
+    </style>
+</head>
+<body>
+
+    <div id="loading-screen"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</div>
+    <div id="error-screen">
+        <i class="fa-solid fa-circle-xmark"></i><br>
+        حدث خطأ أو الكارت غير موجود.
+    </div>
+
+    <div class="card" id="main-card">
+        <div class="cover" id="cover-img"></div>
+        <div class="avatar-container">
+            <img src="" alt="Profile" class="avatar" id="profile-img">
+        </div>
+
+        <div class="info">
+            <h1 id="name">جاري التحميل...</h1>
+            <h3 id="job-title">...</h3>
+            <p id="bio"></p>
+        </div>
+
+        <div class="action-row">
+            <button class="btn-action btn-save" id="btn-save-contact">
+                <i class="fa-solid fa-user-plus"></i> حفظ جهة الاتصال
+            </button>
+            <button class="btn-action btn-share" id="btn-share-card">
+                <i class="fa-solid fa-share-nodes"></i> مشاركة الكارت
+            </button>
+        </div>
+
+        <div class="social-wrapper">
+            <div class="socials" id="social-container">
+                </div>
+        </div>
+
+        <div class="footer">
+            <span>بدعم من</span>
+            <a href="https://jus-tt-ap.com" target="_blank">
+                <img src="https://jus-tt-ap.com/images/main-logo.png" alt="JustTap Logo" class="footer-logo">
+            </a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+        import { db } from "./firebase-config.js";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('uid');
+
+        const loadingScreen = document.getElementById('loading-screen');
+        const errorScreen = document.getElementById('error-screen');
+        const mainCard = document.getElementById('main-card');
+        const socialContainer = document.getElementById('social-container');
+        
+        let fetchedData = null;
+
+        // قاموس الأيقونات (على نفس التصميم اللي في الصورة)
+        const socialIcons = { whatsapp: "fa-brands fa-whatsapp", instagram: "fa-brands fa-instagram", snapchat: "fa-brands fa-snapchat", linkedin: "fa-brands fa-linkedin-in", facebook: "fa-brands fa-facebook-f", twitter: "fa-brands fa-x-twitter", tiktok: "fa-brands fa-tiktok", website: "fa-solid fa-globe" };
+
+        if (!userId) {
+            loadingScreen.style.display = 'none';
+            errorScreen.style.display = 'block';
+        } else {
+            fetchUserData(userId);
+        }
+
+        async function fetchUserData(uid) {
+            try {
+                const docSnap = await getDoc(doc(db, "users", uid));
+                if (docSnap.exists()) {
+                    fetchedData = docSnap.data();
+                    renderProfile(fetchedData);
+                } else {
+                    hideLoadingShowError();
+                }
+            } catch (error) {
+                console.error(error);
+                hideLoadingShowError();
+            }
+        }
+
+        function renderProfile(data) {
+            document.title = `${data.name} | JustTap`;
+            document.getElementById('name').innerText = data.name || "بدون اسم";
+            document.getElementById('job-title').innerText = data.title || "";
+            document.getElementById('bio').innerText = data.bio || "";
+            
+            if (data.avatar) { document.getElementById('profile-img').src = data.avatar; }
+            else { document.getElementById('profile-img').src = "https://via.placeholder.com/110"; }
+
+            if (data.cover) { document.getElementById('cover-img').style.backgroundImage = `url('${data.cover}')`; }
+            else { document.getElementById('cover-img').style.backgroundColor = "#e5e7eb"; }
+
+            // توليد أزرار السوشيال ميديا الموجودة فقط (الي هيكتبه يظهر والي لا يختفي)
+            if (data.links) {
+                for (const [network, url] of Object.entries(data.links)) {
+                    if (url && url.trim() !== "" && socialIcons[network]) {
+                        const a = document.createElement('a');
+                        if (network === 'whatsapp') { a.href = `https://wa.me/${url}`; }
+                        else if (network === 'snapchat') { a.href = `https://snapchat.com/add/${url}`; }
+                        else if (network === 'tiktok' && !url.startsWith('http')) { a.href = `https://tiktok.com/@${url}`; }
+                        else if (network === 'instagram' && !url.startsWith('http')) { a.href = `https://instagram.com/${url}`; }
+                        else if (network === 'twitter' && !url.startsWith('http')) { a.href = `https://x.com/${url}`; }
+                        else { a.href = url; }
+                        a.target = "_blank";
+                        a.innerHTML = `<i class="${socialIcons[network]}"></i>`;
+                        socialContainer.appendChild(a);
+                    }
+                }
+            }
+            loadingScreen.style.display = 'none';
+            mainCard.style.display = 'block';
+        }
+
+        function hideLoadingShowError() { loadingScreen.style.display = 'none'; errorScreen.style.display = 'block'; }
+
+        // دالة حفظ جهة الاتصال (vCard)
+        document.getElementById('btn-save-contact').addEventListener('click', () => {
+            if (!fetchedData) return;
+            const name = fetchedData.name || "User";
+            const phone = (fetchedData.links && fetchedData.links.whatsapp) ? fetchedData.links.whatsapp : "";
+            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN;CHARSET=UTF-8:${name}\nTEL;TYPE=WORK,VOICE:${phone}\nTITLE;CHARSET=UTF-8:${fetchedData.title}\nEND:VCARD`; 
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' }); 
+            const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `${name}.vcf`; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url);
+        });
+
+        // دالة مشاركة الكارت (Share API)
+        document.getElementById('btn-share-card').addEventListener('click', () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    text: `كارتي الرقمي على JustTap.com`,
+                    url: window.location.href,
+                }).catch((error) => console.error('Error sharing', error));
+            } else {
+                // لو المتصفح مابيدعمش الـ Share API (زي بعض متصفحات الكمبيوتر)
+                alert("برجاء نسخ رابط الصفحة للمشاركة!");
+            }
+        });
+    </script>
+</body>
+</html>
