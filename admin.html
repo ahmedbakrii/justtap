@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإدارة | JustTap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #000000; --bg: #f3f4f6; --text: #1f2937; --card-bg: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: var(--bg); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; color: var(--text); }
+        
+        .admin-card { background: var(--card-bg); width: 100%; max-width: 500px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: none; }
+        
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h2 { color: var(--primary); font-weight: 700; }
+        .header p { color: #6b7280; font-size: 14px; }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
+        .input-group input { width: 100%; padding: 12px 15px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 14px; outline: none; transition: 0.3s; }
+        .input-group input:focus { border-color: var(--primary); }
+
+        .btn-submit { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-submit:active { transform: scale(0.98); }
+        .btn-submit:disabled { background: #9ca3af; cursor: not-allowed; }
+
+        .result-box { display: none; margin-top: 20px; padding: 20px; background: #ecfdf5; border: 1px solid #10b981; border-radius: 10px; text-align: center; }
+        .result-box h4 { color: #047857; margin-bottom: 10px; }
+        .result-link { background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #d1d5db; word-break: break-all; margin-bottom: 10px; font-size: 13px; font-family: monospace; }
+        .btn-copy { background: #10b981; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-card" id="admin-panel">
+        <div class="header">
+            <h2><i class="fa-solid fa-user-shield"></i> لوحة الإدارة السريعة</h2>
+            <p>إنشاء كارت جديد لعميل JustTap</p>
+        </div>
+
+        <form id="create-user-form">
+            <div class="input-group">
+                <label>اسم العميل</label>
+                <input type="text" id="client-name" placeholder="مثال: محمد أحمد" required>
+            </div>
+            <div class="input-group">
+                <label>المسمى الوظيفي</label>
+                <input type="text" id="client-title" placeholder="مثال: مهندس برمجيات" required>
+            </div>
+            <div class="input-group">
+                <label>إيميل الدخول (يُعطى للعميل)</label>
+                <input type="email" id="client-email" placeholder="client@justtap.com" required>
+            </div>
+            <div class="input-group">
+                <label>كلمة المرور (يُعطى للعميل)</label>
+                <input type="text" id="client-password" placeholder="على الأقل 6 حروف/أرقام" required minlength="6">
+            </div>
+
+            <button type="submit" class="btn-submit" id="submit-btn">
+                <i class="fa-solid fa-plus"></i> إنشاء الحساب والكارت
+            </button>
+        </form>
+
+        <div class="result-box" id="result-box">
+            <h4><i class="fa-solid fa-circle-check"></i> تم إنشاء الكارت بنجاح!</h4>
+            <p style="font-size: 12px; color: #666; margin-bottom: 5px;">رابط البروفايل (لبرمجة الـ NFC):</p>
+            <div class="result-link" id="profile-link"></div>
+            <button class="btn-copy" id="btn-copy" onclick="copyLink()">
+                <i class="fa-regular fa-copy"></i> نسخ الرابط
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+        // ==========================================
+        // حط بيانات الفايربيز بتاعتك هنا (زي اللي في firebase-config.js)
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "jus-tt-ap.firebaseapp.com",
+            projectId: "jus-tt-ap",
+            storageBucket: "jus-tt-ap.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // حماية بسيطة للصفحة بباسورد (اكتب الباسورد اللي يعجبك هنا)
+        const ADMIN_PASSWORD = "123"; 
+        
+        window.onload = () => {
+            const pass = prompt("برجاء إدخال كلمة مرور الإدارة:");
+            if (pass === ADMIN_PASSWORD) {
+                document.getElementById('admin-panel').style.display = 'block';
+            } else {
+                document.body.innerHTML = "<h2 style='text-align:center; margin-top:50px; color:red;'>غير مصرح لك بالدخول</h2>";
+            }
+        };
+
+        // تشغيل تطبيقين فايربيز (عشان التسجيل ميخرجكش من حسابك)
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        const secondaryApp = initializeApp(firebaseConfig, "SecondaryApp");
+        const secondaryAuth = getAuth(secondaryApp);
+
+        const form = document.getElementById('create-user-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultBox = document.getElementById('result-box');
+        const profileLinkDiv = document.getElementById('profile-link');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('client-name').value;
+            const title = document.getElementById('client-title').value;
+            const email = document.getElementById('client-email').value;
+            const password = document.getElementById('client-password').value;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإنشاء...';
+
+            try {
+                // 1. إنشاء الحساب في Authentication
+                const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+                const uid = userCredential.user.uid;
+
+                // 2. إنشاء الكارت في Firestore
+                await setDoc(doc(db, "users", uid), {
+                    name: name,
+                    title: title,
+                    email: email, // احتفظنا بيه عشان لو احتاجه
+                    links: {},
+                    createdAt: new Date().toISOString()
+                });
+
+                // 3. تسجيل الخروج من التطبيق الثانوي (نضافة للكود)
+                await signOut(secondaryAuth);
+
+                // 4. إظهار النتيجة
+                const profileUrl = `https://www.jus-tt-ap.com/profile.html?uid=${uid}`;
+                profileLinkDiv.innerText = profileUrl;
+                
+                form.reset();
+                resultBox.style.display = 'block';
+                submitBtn.innerHTML = '<i class="fa-solid fa-plus"></i> إنشاء كارت جديد';
+                submitBtn.disabled = false;
+
+            } catch (error) {
+                console.error(error);
+                alert("حدث خطأ: " + error.message);
+                submitBtn.innerHTML = '<i class="fa-solid fa-plus"></i> إنشاء الحساب والكارت';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // دالة نسخ الرابط
+        window.copyLink = function() {
+            const link = document.getElementById('profile-link').innerText;
+            navigator.clipboard.writeText(link).then(() => {
+                const btnCopy = document.getElementById('btn-copy');
+                btnCopy.innerHTML = '<i class="fa-solid fa-check"></i> تم النسخ!';
+                setTimeout(() => {
+                    btnCopy.innerHTML = '<i class="fa-regular fa-copy"></i> نسخ الرابط';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
