@@ -1,189 +1,210 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="html-tag">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>البروفايل الرقمي | JustTap</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>الملف الشخصي | JustTap</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        :root { --primary: #000000; --bg: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); --text: #1f2937; --card-bg: #ffffff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background: var(--bg); min-height: 100vh; display: flex; justify-content: center; padding: 20px 10px; color: var(--text); }
+        /* إعدادات عامة للتصميم النظيف */
+        body { background-color: #f3f4f6; font-family: 'Cairo', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; align-items: flex-start; }
         
-        /* شاشات التحميل والخطأ */
-        #loading-screen, #error-screen { text-align: center; font-size: 18px; font-weight: bold; color: #555; align-self: center; }
-        #error-screen { color: #dc3545; display: none; }
-        #error-screen i { font-size: 50px; margin-bottom: 15px; }
+        .profile-card { 
+            background: #fff; 
+            width: 100%; 
+            max-width: 420px; 
+            border-radius: 24px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            overflow: hidden; 
+            padding-bottom: 30px; 
+            margin-top: 20px;
+        }
+        
+        /* الصور */
+        .cover-img { width: 100%; height: 180px; background-color: #e5e7eb; background-size: cover; background-position: center; }
+        .avatar-container { display: flex; justify-content: center; margin-top: -60px; }
+        .avatar-img { width: 120px; height: 120px; border-radius: 50%; border: 5px solid #fff; object-fit: cover; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        /* النصوص */
+        .info-section { text-align: center; padding: 15px 25px; }
+        .info-section h1 { margin: 0; font-size: 24px; color: #111827; font-weight: 700; }
+        .info-section .title { color: #4b5563; font-weight: 600; font-size: 15px; margin: 5px 0 2px; }
+        .info-section .company { color: #9ca3af; font-size: 13px; margin: 0 0 15px; }
+        .info-section .bio { color: #6b7280; font-size: 14px; line-height: 1.6; }
+        
+        /* الأزرار */
+        .save-btn-container { padding: 0 25px; margin-top: 5px; }
+        .save-btn { 
+            display: block; width: 100%; background: #000; color: #deff9a; 
+            text-align: center; padding: 15px; border-radius: 14px; 
+            font-weight: 700; font-size: 16px; border: none; cursor: pointer; 
+            transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .save-btn:hover { background: #1f2937; transform: translateY(-2px); }
+        
+        /* شبكة السوشيال ميديا */
+        .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 25px; }
+        .social-btn { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            text-decoration: none; color: #374151; background: #f9fafb; 
+            padding: 15px 10px; border-radius: 16px; transition: 0.3s; border: 1px solid #f3f4f6;
+        }
+        .social-btn:hover { background: #fff; border-color: #e5e7eb; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transform: translateY(-3px); }
+        .social-btn i { font-size: 26px; margin-bottom: 8px; }
+        .social-btn span { font-size: 11px; font-weight: 600; }
+        
+        /* ألوان الأيقونات */
+        .c-wa { color: #25D366; } .c-fb { color: #1877F2; } .c-ig { color: #E1306C; } .c-tt { color: #000000; }
+        .c-li { color: #0A66C2; } .c-tw { color: #000000; } .c-sc { color: #FFFC00; text-shadow: 0 0 1px #000; } .c-yt { color: #FF0000; }
 
-        .card { background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); position: relative; padding-bottom: 20px; display: none; /* مخفي لحين تحميل البيانات */ }
-
-        .cover { width: 100%; height: 160px; background-size: cover; background-position: center; }
-
-        .avatar-container { width: 110px; height: 110px; margin: -55px auto 15px; }
-        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #fff; }
-
-        .info { text-align: center; padding: 0 20px; margin-bottom: 20px; }
-        .info h1 { font-size: 24px; margin-bottom: 5px; font-weight: 700; color: #000; }
-        .info h3 { font-size: 14px; color: #6b7280; font-weight: 600; margin-bottom: 10px; }
-        .info p { font-size: 13px; color: #4b5563; line-height: 1.6; }
-
-        .action-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; }
-        .btn-action { display: flex; align-items: center; justify-content: center; gap: 8px; border: none; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s; flex: 1; max-width: 170px; }
-        .btn-action:active { transform: scale(0.98); }
-        .btn-save { background: #000; color: #fff; }
-        .btn-share { background: #f3f4f6; color: #000; border: 1px solid #ddd; }
-
-        .social-wrapper { background: #f4f4f5; margin: 0 20px; padding: 15px; border-radius: 20px; }
-        .socials { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .socials a { display: flex; align-items: center; justify-content: center; background: #ffffff; height: 55px; border-radius: 12px; text-decoration: none; font-size: 24px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); transition: transform 0.2s; color: #000 !important; }
-        .socials a:active { transform: scale(0.95); background: #f9fafb; }
-
-        .footer { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 25px; padding-top: 15px; font-size: 12px; color: #9ca3af; font-weight: 600; }
-        .footer-logo { height: 20px; object-fit: contain; }
+        /* حالة التحميل */
+        .loading-state { text-align: center; padding: 100px 20px; color: #6b7280; width: 100%; max-width: 420px; background: #fff; border-radius: 24px; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="loading-screen"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</div>
-    <div id="error-screen">
-        <i class="fa-solid fa-circle-xmark"></i><br>
-        حدث خطأ أو الكارت غير موجود.
+    <div class="loading-state" id="loading-spinner">
+        <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+        <p style="margin-top: 15px; font-weight: 600;">جاري تحميل الكارت...</p>
     </div>
 
-    <div class="card" id="main-card">
-        <div class="cover" id="cover-img"></div>
+    <div class="profile-card" id="profile-content" style="display: none;">
+        <div class="cover-img" id="user-cover"></div>
         <div class="avatar-container">
-            <img src="" alt="Profile" class="avatar" id="profile-img">
+            <img src="" alt="Avatar" class="avatar-img" id="user-avatar">
+        </div>
+        
+        <div class="info-section">
+            <h1 id="user-name"></h1>
+            <div class="title" id="user-title"></div>
+            <div class="company" id="user-company"></div>
+            <div class="bio" id="user-bio"></div>
         </div>
 
-        <div class="info">
-            <h1 id="name">جاري التحميل...</h1>
-            <h3 id="job-title">...</h3>
-            <p id="bio"></p>
+        <div class="save-btn-container">
+            <button class="save-btn" id="save-contact-btn"><i class="fa-solid fa-address-book"></i> حفظ في جهات الاتصال</button>
         </div>
 
-        <div class="action-row">
-            <button class="btn-action btn-save" id="btn-save-contact">
-                <i class="fa-solid fa-user-plus"></i> حفظ جهة الاتصال
-            </button>
-            <button class="btn-action btn-share" id="btn-share-card">
-                <i class="fa-solid fa-share-nodes"></i> مشاركة الكارت
-            </button>
-        </div>
-
-        <div class="social-wrapper">
-            <div class="socials" id="social-container">
-                </div>
-        </div>
-
-        <div class="footer">
-            <span>بدعم من</span>
-            <a href="https://jus-tt-ap.com" target="_blank">
-                <img src="https://jus-tt-ap.com/images/main-logo.png" alt="JustTap Logo" class="footer-logo">
-            </a>
-        </div>
+        <div class="social-grid" id="social-links-container">
+            </div>
     </div>
 
     <script type="module">
-        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-        import { db } from "./firebase-config.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
+        // ⚠️ لا تنسى وضع بيانات مشروعك الحقيقية هنا كما فعلت في لوحة التحكم
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "jus-tt-ap.firebaseapp.com",
+            projectId: "jus-tt-ap",
+            storageBucket: "jus-tt-ap.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // استخراج الـ ID الخاص بالمستخدم من الرابط
+        // لكي يفتح الكارت، يجب أن يكون الرابط هكذا: profile.html?id=رقم_المستخدم
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('uid');
+        const userId = urlParams.get('id');
 
-        const loadingScreen = document.getElementById('loading-screen');
-        const errorScreen = document.getElementById('error-screen');
-        const mainCard = document.getElementById('main-card');
-        const socialContainer = document.getElementById('social-container');
-        
-        let fetchedData = null;
+        async function loadProfile() {
+            if (!userId) {
+                document.getElementById('loading-spinner').innerHTML = "<h3>عفواً، الكارت غير صالح أو الرابط ناقص.</h3>";
+                return;
+            }
 
-        // قاموس الأيقونات (على نفس التصميم اللي في الصورة)
-        const socialIcons = { whatsapp: "fa-brands fa-whatsapp", instagram: "fa-brands fa-instagram", snapchat: "fa-brands fa-snapchat", linkedin: "fa-brands fa-linkedin-in", facebook: "fa-brands fa-facebook-f", twitter: "fa-brands fa-x-twitter", tiktok: "fa-brands fa-tiktok", website: "fa-solid fa-globe" };
-
-        if (!userId) {
-            loadingScreen.style.display = 'none';
-            errorScreen.style.display = 'block';
-        } else {
-            fetchUserData(userId);
-        }
-
-        async function fetchUserData(uid) {
             try {
-                const docSnap = await getDoc(doc(db, "users", uid));
+                const docRef = doc(db, "users", userId);
+                const docSnap = await getDoc(docRef);
+
                 if (docSnap.exists()) {
-                    fetchedData = docSnap.data();
-                    renderProfile(fetchedData);
+                    const data = docSnap.data();
+
+                    // 1. تعبئة النصوص
+                    document.getElementById('user-name').innerText = data.name || 'مستخدم JustTap';
+                    document.getElementById('user-title').innerText = data.title || '';
+                    document.getElementById('user-company').innerText = data.company || '';
+                    document.getElementById('user-bio').innerText = data.bio || '';
+
+                    // 2. تعبئة الصور (مباشرة من الـ Base64)
+                    if (data.cover) document.getElementById('user-cover').style.backgroundImage = `url(${data.cover})`;
+                    document.getElementById('user-avatar').src = data.avatar || 'https://via.placeholder.com/150';
+
+                    // 3. بناء شبكة السوشيال ميديا بذكاء (Sanitization)
+                    const linksContainer = document.getElementById('social-links-container');
+                    const links = data.links || {};
+                    
+                    // القاموس الخاص بالمنصات وروابطها
+                    const platforms = [
+                        { id: 'whatsapp', icon: 'fa-whatsapp', colorClass: 'c-wa', name: 'واتساب', urlPrefix: 'https://wa.me/' },
+                        { id: 'facebook', icon: 'fa-facebook-f', colorClass: 'c-fb', name: 'فيسبوك', urlPrefix: 'https://facebook.com/' },
+                        { id: 'instagram', icon: 'fa-instagram', colorClass: 'c-ig', name: 'انستجرام', urlPrefix: 'https://instagram.com/' },
+                        { id: 'tiktok', icon: 'fa-tiktok', colorClass: 'c-tt', name: 'تيك توك', urlPrefix: 'https://tiktok.com/@' },
+                        { id: 'linkedin', icon: 'fa-linkedin-in', colorClass: 'c-li', name: 'لينكد إن', urlPrefix: 'https://linkedin.com/in/' },
+                        { id: 'twitter', icon: 'fa-x-twitter', colorClass: 'c-tw', name: 'تويتر', urlPrefix: 'https://twitter.com/' },
+                        { id: 'snapchat', icon: 'fa-snapchat', colorClass: 'c-sc', name: 'سناب شات', urlPrefix: 'https://snapchat.com/add/' },
+                        { id: 'youtube', icon: 'fa-youtube', colorClass: 'c-yt', name: 'يوتيوب', urlPrefix: 'https://youtube.com/' }
+                    ];
+
+                    platforms.forEach(platform => {
+                        if (links[platform.id]) {
+                            // تنظيف المعرف من أي روابط كاملة أضافها العميل بالخطأ
+                            let handle = links[platform.id].trim().replace(/\/$/, ""); 
+                            handle = handle.substring(handle.lastIndexOf('/') + 1); 
+                            
+                            const finalUrl = platform.urlPrefix + handle;
+                            
+                            const btnHTML = `
+                                <a href="${finalUrl}" target="_blank" class="social-btn">
+                                    <i class="fa-brands ${platform.icon} ${platform.colorClass}"></i>
+                                    <span>${platform.name}</span>
+                                </a>
+                            `;
+                            linksContainer.innerHTML += btnHTML;
+                        }
+                    });
+
+                    // إخفاء التحميل وإظهار البروفايل
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    document.getElementById('profile-content').style.display = 'block';
+
                 } else {
-                    hideLoadingShowError();
+                    document.getElementById('loading-spinner').innerHTML = "<h3>هذا الحساب غير موجود في النظام.</h3>";
                 }
             } catch (error) {
-                console.error(error);
-                hideLoadingShowError();
+                console.error("Error fetching document:", error);
+                document.getElementById('loading-spinner').innerHTML = "<h3>حدث خطأ في جلب بيانات الكارت.</h3>";
             }
         }
 
-        function renderProfile(data) {
-            document.title = `${data.name} | JustTap`;
-            document.getElementById('name').innerText = data.name || "بدون اسم";
-            document.getElementById('job-title').innerText = data.title || "";
-            document.getElementById('bio').innerText = data.bio || "";
+        // 4. ميزة حفظ جهة الاتصال (VCF) لتعمل مع الـ NFC
+        document.getElementById('save-contact-btn').addEventListener('click', () => {
+            const name = document.getElementById('user-name').innerText;
+            const title = document.getElementById('user-title').innerText;
+            const company = document.getElementById('user-company').innerText;
             
-            if (data.avatar) { document.getElementById('profile-img').src = data.avatar; }
-            else { document.getElementById('profile-img').src = "https://via.placeholder.com/110"; }
+            // هيكل الـ vCard
+            let vcfData = `BEGIN:VCARD\nVERSION:3.0\nN:;${name};;;\nFN:${name}\nORG:${company}\nTITLE:${title}\nEND:VCARD`;
 
-            if (data.cover) { document.getElementById('cover-img').style.backgroundImage = `url('${data.cover}')`; }
-            else { document.getElementById('cover-img').style.backgroundColor = "#e5e7eb"; }
-
-            // توليد أزرار السوشيال ميديا الموجودة فقط (الي هيكتبه يظهر والي لا يختفي)
-            if (data.links) {
-                for (const [network, url] of Object.entries(data.links)) {
-                    if (url && url.trim() !== "" && socialIcons[network]) {
-                        const a = document.createElement('a');
-                        if (network === 'whatsapp') { a.href = `https://wa.me/${url}`; }
-                        else if (network === 'snapchat') { a.href = `https://snapchat.com/add/${url}`; }
-                        else if (network === 'tiktok' && !url.startsWith('http')) { a.href = `https://tiktok.com/@${url}`; }
-                        else if (network === 'instagram' && !url.startsWith('http')) { a.href = `https://instagram.com/${url}`; }
-                        else if (network === 'twitter' && !url.startsWith('http')) { a.href = `https://x.com/${url}`; }
-                        else { a.href = url; }
-                        a.target = "_blank";
-                        a.innerHTML = `<i class="${socialIcons[network]}"></i>`;
-                        socialContainer.appendChild(a);
-                    }
-                }
-            }
-            loadingScreen.style.display = 'none';
-            mainCard.style.display = 'block';
-        }
-
-        function hideLoadingShowError() { loadingScreen.style.display = 'none'; errorScreen.style.display = 'block'; }
-
-        // دالة حفظ جهة الاتصال (vCard)
-        document.getElementById('btn-save-contact').addEventListener('click', () => {
-            if (!fetchedData) return;
-            const name = fetchedData.name || "User";
-            const phone = (fetchedData.links && fetchedData.links.whatsapp) ? fetchedData.links.whatsapp : "";
-            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN;CHARSET=UTF-8:${name}\nTEL;TYPE=WORK,VOICE:${phone}\nTITLE;CHARSET=UTF-8:${fetchedData.title}\nEND:VCARD`; 
-            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' }); 
-            const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `${name}.vcf`; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url);
+            const blob = new Blob([vcfData], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${name}.vcf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         });
 
-        // دالة مشاركة الكارت (Share API)
-        document.getElementById('btn-share-card').addEventListener('click', () => {
-            if (navigator.share) {
-                navigator.share({
-                    title: document.title,
-                    text: `كارتي الرقمي على JustTap.com`,
-                    url: window.location.href,
-                }).catch((error) => console.error('Error sharing', error));
-            } else {
-                // لو المتصفح مابيدعمش الـ Share API (زي بعض متصفحات الكمبيوتر)
-                alert("برجاء نسخ رابط الصفحة للمشاركة!");
-            }
-        });
+        // تشغيل الدالة فوراً
+        loadProfile();
     </script>
 </body>
 </html>
