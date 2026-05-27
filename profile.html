@@ -8,58 +8,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* إعدادات عامة للتصميم النظيف */
         body { background-color: #f3f4f6; font-family: 'Cairo', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; align-items: flex-start; }
         
-        .profile-card { 
-            background: #fff; 
-            width: 100%; 
-            max-width: 420px; 
-            border-radius: 24px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-            overflow: hidden; 
-            padding-bottom: 30px; 
-            margin-top: 20px;
-        }
+        .profile-card { background: #fff; width: 100%; max-width: 420px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; padding-bottom: 30px; margin-top: 20px; }
         
-        /* الصور */
         .cover-img { width: 100%; height: 180px; background-color: #e5e7eb; background-size: cover; background-position: center; }
         .avatar-container { display: flex; justify-content: center; margin-top: -60px; }
         .avatar-img { width: 120px; height: 120px; border-radius: 50%; border: 5px solid #fff; object-fit: cover; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
-        /* النصوص */
         .info-section { text-align: center; padding: 15px 25px; }
         .info-section h1 { margin: 0; font-size: 24px; color: #111827; font-weight: 700; }
         .info-section .title { color: #4b5563; font-weight: 600; font-size: 15px; margin: 5px 0 2px; }
         .info-section .company { color: #9ca3af; font-size: 13px; margin: 0 0 15px; }
         .info-section .bio { color: #6b7280; font-size: 14px; line-height: 1.6; }
         
-        /* الأزرار */
         .save-btn-container { padding: 0 25px; margin-top: 5px; }
-        .save-btn { 
-            display: block; width: 100%; background: #000; color: #deff9a; 
-            text-align: center; padding: 15px; border-radius: 14px; 
-            font-weight: 700; font-size: 16px; border: none; cursor: pointer; 
-            transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+        .save-btn { display: block; width: 100%; background: #000; color: #deff9a; text-align: center; padding: 15px; border-radius: 14px; font-weight: 700; font-size: 16px; border: none; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .save-btn:hover { background: #1f2937; transform: translateY(-2px); }
         
-        /* شبكة السوشيال ميديا */
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 25px; }
-        .social-btn { 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            text-decoration: none; color: #374151; background: #f9fafb; 
-            padding: 15px 10px; border-radius: 16px; transition: 0.3s; border: 1px solid #f3f4f6;
-        }
+        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #374151; background: #f9fafb; padding: 15px 10px; border-radius: 16px; transition: 0.3s; border: 1px solid #f3f4f6; }
         .social-btn:hover { background: #fff; border-color: #e5e7eb; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transform: translateY(-3px); }
         .social-btn i { font-size: 26px; margin-bottom: 8px; }
         .social-btn span { font-size: 11px; font-weight: 600; }
         
-        /* ألوان الأيقونات */
         .c-wa { color: #25D366; } .c-fb { color: #1877F2; } .c-ig { color: #E1306C; } .c-tt { color: #000000; }
         .c-li { color: #0A66C2; } .c-tw { color: #000000; } .c-sc { color: #FFFC00; text-shadow: 0 0 1px #000; } .c-yt { color: #FF0000; }
 
-        /* حالة التحميل */
         .loading-state { text-align: center; padding: 100px 20px; color: #6b7280; width: 100%; max-width: 420px; background: #fff; border-radius: 24px; margin-top: 20px; }
     </style>
 </head>
@@ -87,31 +62,30 @@
             <button class="save-btn" id="save-contact-btn"><i class="fa-solid fa-address-book"></i> حفظ في جهات الاتصال</button>
         </div>
 
-        <div class="social-grid" id="social-links-container">
-            </div>
+        <div class="social-grid" id="social-links-container"></div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-        // ⚠️ لا تنسى وضع بيانات مشروعك الحقيقية هنا كما فعلت في لوحة التحكم
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "jus-tt-ap.firebaseapp.com",
-            projectId: "jus-tt-ap",
-            storageBucket: "jus-tt-ap.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+        // ⚠️ ضع بياناتك هنا ⚠️
+       const firebaseConfig = {
+  apiKey: "AIzaSyAfpew-RjS5kUjpRK6SGpkCpetrioLL2oE",
+  authDomain: "jus-tt-ap.firebaseapp.com",
+  databaseURL: "https://jus-tt-ap-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "jus-tt-ap",
+  storageBucket: "jus-tt-ap.firebasestorage.app",
+  messagingSenderId: "602186980260",
+  appId: "1:602186980260:web:940e78a048db2a656a3f31"
+};
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // استخراج الـ ID الخاص بالمستخدم من الرابط
-        // لكي يفتح الكارت، يجب أن يكون الرابط هكذا: profile.html?id=رقم_المستخدم
+        // ✅ التعديل السحري هنا: هيقرأ uid أو id عشان يشتغل مع كل الروابط
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('id');
+        const userId = urlParams.get('uid') || urlParams.get('id');
 
         async function loadProfile() {
             if (!userId) {
@@ -126,21 +100,17 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
 
-                    // 1. تعبئة النصوص
-                    document.getElementById('user-name').innerText = data.name || 'مستخدم JustTap';
+                    document.getElementById('user-name').innerText = data.name || 'عميل JustTap';
                     document.getElementById('user-title').innerText = data.title || '';
                     document.getElementById('user-company').innerText = data.company || '';
                     document.getElementById('user-bio').innerText = data.bio || '';
 
-                    // 2. تعبئة الصور (مباشرة من الـ Base64)
                     if (data.cover) document.getElementById('user-cover').style.backgroundImage = `url(${data.cover})`;
                     document.getElementById('user-avatar').src = data.avatar || 'https://via.placeholder.com/150';
 
-                    // 3. بناء شبكة السوشيال ميديا بذكاء (Sanitization)
                     const linksContainer = document.getElementById('social-links-container');
                     const links = data.links || {};
                     
-                    // القاموس الخاص بالمنصات وروابطها
                     const platforms = [
                         { id: 'whatsapp', icon: 'fa-whatsapp', colorClass: 'c-wa', name: 'واتساب', urlPrefix: 'https://wa.me/' },
                         { id: 'facebook', icon: 'fa-facebook-f', colorClass: 'c-fb', name: 'فيسبوك', urlPrefix: 'https://facebook.com/' },
@@ -154,10 +124,8 @@
 
                     platforms.forEach(platform => {
                         if (links[platform.id]) {
-                            // تنظيف المعرف من أي روابط كاملة أضافها العميل بالخطأ
                             let handle = links[platform.id].trim().replace(/\/$/, ""); 
                             handle = handle.substring(handle.lastIndexOf('/') + 1); 
-                            
                             const finalUrl = platform.urlPrefix + handle;
                             
                             const btnHTML = `
@@ -170,12 +138,17 @@
                         }
                     });
 
-                    // إخفاء التحميل وإظهار البروفايل
                     document.getElementById('loading-spinner').style.display = 'none';
                     document.getElementById('profile-content').style.display = 'block';
 
                 } else {
-                    document.getElementById('loading-spinner').innerHTML = "<h3>هذا الحساب غير موجود في النظام.</h3>";
+                    // رسالة لو الحساب لسه متكريت ومفيش داتا جواه
+                    document.getElementById('loading-spinner').innerHTML = `
+                        <h3>هذا الكارت جديد!</h3>
+                        <p style="font-size: 14px; color: #666; margin-top: 10px;">
+                            يرجى تسجيل الدخول إلى لوحة التحكم وحفظ بياناتك لتفعيل الكارت.
+                        </p>
+                    `;
                 }
             } catch (error) {
                 console.error("Error fetching document:", error);
@@ -183,15 +156,11 @@
             }
         }
 
-        // 4. ميزة حفظ جهة الاتصال (VCF) لتعمل مع الـ NFC
         document.getElementById('save-contact-btn').addEventListener('click', () => {
             const name = document.getElementById('user-name').innerText;
             const title = document.getElementById('user-title').innerText;
             const company = document.getElementById('user-company').innerText;
-            
-            // هيكل الـ vCard
             let vcfData = `BEGIN:VCARD\nVERSION:3.0\nN:;${name};;;\nFN:${name}\nORG:${company}\nTITLE:${title}\nEND:VCARD`;
-
             const blob = new Blob([vcfData], { type: 'text/vcard' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -203,7 +172,6 @@
             URL.revokeObjectURL(url);
         });
 
-        // تشغيل الدالة فوراً
         loadProfile();
     </script>
 </body>
