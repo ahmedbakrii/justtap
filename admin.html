@@ -8,37 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
+        /* الـ CSS الخاص بك بدون تغيير */
         :root { --primary: #000000; --bg: #f3f4f6; --text: #1f2937; --card-bg: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
         body { background: var(--bg); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; color: var(--text); }
-        
         .admin-card { background: var(--card-bg); width: 100%; max-width: 500px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: none; }
-        
-        .header { text-align: center; margin-bottom: 25px; }
-        .header h2 { color: var(--primary); font-weight: 700; }
-        .header p { color: #6b7280; font-size: 14px; }
-
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
-        .input-group input { width: 100%; padding: 12px 15px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 14px; outline: none; transition: 0.3s; }
-        .input-group input:focus { border-color: var(--primary); }
-
-        .btn-submit { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .btn-submit:active { transform: scale(0.98); }
-        .btn-submit:disabled { background: #9ca3af; cursor: not-allowed; }
-
-        .result-box { display: none; margin-top: 20px; padding: 20px; background: #ecfdf5; border: 1px solid #10b981; border-radius: 10px; text-align: center; }
-        .result-box h4 { color: #047857; margin-bottom: 10px; }
-        .result-link { background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #d1d5db; word-break: break-all; margin-bottom: 10px; font-size: 13px; font-family: monospace; }
-        
-        /* أزرار النتيجة */
-        .action-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 15px; flex-wrap: wrap; }
-        .btn-copy { background: #10b981; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; flex: 1; }
-        .btn-download-qr { background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; flex: 1; }
-        
-        /* حاوية الـ QR Code */
-        #qrcode-container { display: flex; justify-content: center; margin: 15px 0; background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e5e7eb; }
-        #qrcode-container img { margin: auto; }
+        .header { text-align: center; margin-bottom: 25px; } .header h2 { color: var(--primary); font-weight: 700; } .header p { color: #6b7280; font-size: 14px; }
+        .input-group { margin-bottom: 15px; } .input-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; } .input-group input { width: 100%; padding: 12px 15px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 14px; outline: none; transition: 0.3s; } .input-group input:focus { border-color: var(--primary); }
+        .btn-submit { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px; } .btn-submit:active { transform: scale(0.98); } .btn-submit:disabled { background: #9ca3af; cursor: not-allowed; }
+        .result-box { display: none; margin-top: 20px; padding: 20px; background: #ecfdf5; border: 1px solid #10b981; border-radius: 10px; text-align: center; } .result-box h4 { color: #047857; margin-bottom: 10px; } .result-link { background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #d1d5db; word-break: break-all; margin-bottom: 10px; font-size: 13px; font-family: monospace; }
+        .action-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 15px; flex-wrap: wrap; } .btn-copy { background: #10b981; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; flex: 1; } .btn-download-qr { background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; flex: 1; }
+        #qrcode-container { display: flex; justify-content: center; margin: 15px 0; background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e5e7eb; } #qrcode-container img { margin: auto; }
     </style>
 </head>
 <body>
@@ -76,9 +56,7 @@
             <h4><i class="fa-solid fa-circle-check"></i> تم إنشاء الكارت بنجاح!</h4>
             <p style="font-size: 12px; color: #666; margin-bottom: 5px;">رابط البروفايل (لبرمجة الـ NFC):</p>
             <div class="result-link" id="profile-link"></div>
-            
             <div id="qrcode-container"></div>
-
             <div class="action-buttons">
                 <button class="btn-copy" id="btn-copy" onclick="copyLink()">
                     <i class="fa-regular fa-copy"></i> نسخ الرابط
@@ -93,21 +71,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
-        // ==========================================
-        // حط بيانات الفايربيز بتاعتك هنا
-        // ==========================================
-     const firebaseConfig = {
-  apiKey: "AIzaSyAfpew-RjS5kUjpRK6SGpkCpetrioLL2oE",
-  authDomain: "jus-tt-ap.firebaseapp.com",
-  databaseURL: "https://jus-tt-ap-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "jus-tt-ap",
-  storageBucket: "jus-tt-ap.firebasestorage.app",
-  messagingSenderId: "602186980260",
-  appId: "1:602186980260:web:940e78a048db2a656a3f31"
-};
-
+        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+        import { db, firebaseConfig } from "./firebase-config.js";
 
         const ADMIN_PASSWORD = "2225"; 
         
@@ -120,9 +85,7 @@
             }
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        
+        // الـ Secondary App علشان نعمل حساب للعميل من غير ما نسجل خروج من الأكونت الأساسي
         const secondaryApp = initializeApp(firebaseConfig, "SecondaryApp");
         const secondaryAuth = getAuth(secondaryApp);
 
@@ -132,7 +95,7 @@
         const profileLinkDiv = document.getElementById('profile-link');
         const qrContainer = document.getElementById('qrcode-container');
 
-        let currentClientName = "Client"; // عشان نستخدمه في اسم ملف الـ QR
+        let currentClientName = "Client";
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -142,7 +105,7 @@
             const email = document.getElementById('client-email').value;
             const password = document.getElementById('client-password').value;
 
-            currentClientName = name; // حفظ الاسم
+            currentClientName = name; 
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإنشاء...';
 
@@ -160,17 +123,14 @@
 
                 await signOut(secondaryAuth);
 
-                const profileUrl = `https://www.jus-tt-ap.com/profile.html?uid=${uid}`;
+                const profileUrl = `https://www.jus-tt-ap.com/profile.html?uid=${uid}`; // تم توحيدها لـ uid
                 profileLinkDiv.innerText = profileUrl;
                 
-                // تنظيف الـ QR القديم وتوليد واحد جديد
                 qrContainer.innerHTML = "";
                 new QRCode(qrContainer, {
                     text: profileUrl,
-                    width: 160,
-                    height: 160,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
+                    width: 160, height: 160,
+                    colorDark : "#000000", colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.H
                 });
                 
@@ -187,7 +147,6 @@
             }
         });
 
-        // دالة نسخ الرابط
         window.copyLink = function() {
             const link = document.getElementById('profile-link').innerText;
             navigator.clipboard.writeText(link).then(() => {
@@ -199,14 +158,12 @@
             });
         }
 
-        // دالة تحميل الـ QR Code كصورة
         document.getElementById('btn-download-qr').addEventListener('click', () => {
             const canvas = qrContainer.querySelector('canvas');
             if (canvas) {
                 const imageUrl = canvas.toDataURL("image/png");
                 const downloadLink = document.createElement("a");
                 downloadLink.href = imageUrl;
-                // الصورة هتنزل باسم العميل عشان متتلخبطش في الملفات
                 downloadLink.download = `JustTap_QR_${currentClientName.replace(/\s+/g, '_')}.png`;
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
