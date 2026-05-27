@@ -66,6 +66,9 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
 
+                    // 🌟 التعديل الجديد: تحديث عنوان الـ Tab باسم الشخص تلقائياً فور جلب البيانات 🌟
+                    document.title = (data.name || "الملف الشخصي") + " | JustTap";
+
                     document.getElementById('user-name').innerText = data.name || 'عميل JustTap';
                     document.getElementById('user-title').innerText = data.title || '';
                     document.getElementById('user-company').innerText = data.company || '';
@@ -75,6 +78,7 @@
                     document.getElementById('user-avatar').src = data.avatar || 'https://via.placeholder.com/150';
 
                     const linksContainer = document.getElementById('social-links-container');
+                    linksContainer.innerHTML = ''; // تفريغ الحاوية قبل الإضافة لتجنب التكرار
                     const links = data.links || {};
                     
                     const platforms = [
