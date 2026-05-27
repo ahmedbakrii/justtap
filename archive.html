@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أرشيف العملاء | JustTap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #090d16;
+            --bg-card: #111827;
+            --accent: #deff9a;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: rgba(255, 255, 255, 0.05);
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
+
+        .container { max-width: 1200px; margin: 0 auto; width: 100%; }
+        
+        /* شاشة تسجيل الدخول المؤمنة */
+        #auth-screen { flex: 1; display: flex; justify-content: center; align-items: center; min-height: 80vh; }
+        .login-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 30px; width: 100%; max-width: 400px; text-align: center; }
+        .login-box h2 { color: var(--accent); margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; text-align: right; }
+        .input-group input { width: 100%; padding: 12px; background: #1f2937; border: 1px solid var(--border); border-radius: 10px; color: #fff; outline: none; margin-top: 5px; }
+        .input-group input:focus { border-color: var(--accent); }
+        .btn-login { width: 100%; padding: 12px; background: var(--accent); color: #000; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px; font-size: 15px; }
+        .btn-login:hover { background: #bce674; }
+
+        /* شاشة الأرشيف (مخفية في البداية) */
+        #archive-content { display: none; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .logo { font-size: 24px; font-weight: 700; color: #fff; }
+        .logo span { color: var(--accent); }
+        
+        .header-actions { display: flex; gap: 10px; }
+        .btn-print { background: var(--accent); color: #000; border: none; padding: 8px 15px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-logout { background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 8px 15px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        
+        .table-container { background: var(--bg-card); border: 1px solid var(--border); border-radius: 15px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: right; }
+        th, td { padding: 15px; border-bottom: 1px solid var(--border); }
+        th { background-color: rgba(255,255,255,0.02); color: var(--accent); font-weight: 700; font-size: 15px; }
+        td { font-size: 14px; vertical-align: middle; }
+        
+        .qr-img { width: 80px; height: 80px; border-radius: 8px; background: #fff; padding: 5px; }
+        .uid-badge { background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 5px; font-family: monospace; font-size: 13px; color: var(--accent); }
+        .profile-link { color: #60a5fa; text-decoration: none; font-size: 13px; word-break: break-all; }
+
+        @media print {
+            .header-actions, #auth-screen { display: none !important; }
+            body { background: #fff; color: #000; }
+            .table-container { border: 1px solid #ddd; }
+            th { color: #000; border-bottom: 2px solid #000; }
+            td { border-bottom: 1px solid #ddd; }
+            .uid-badge { color: #000; border: 1px solid #000; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="auth-screen">
+        <div class="login-box">
+            <h2><i class="fa-solid fa-lock"></i> أرشيف الإدارة</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">الرجاء تسجيل الدخول للوصول إلى قاعدة بيانات العملاء</p>
+            <form id="admin-login-form">
+                <div class="input-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="admin-email" required>
+                </div>
+                <div class="input-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="admin-password" required>
+                </div>
+                <button type="submit" class="btn-login" id="btn-login-submit">دخول آمن</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="archive-content" class="container">
+        <header>
+            <div class="logo">Just<span>Tap</span> أرشيف العملاء</div>
+            <div class="header-actions">
+                <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> طباعة</button>
+                <button class="btn-logout" id="btn-admin-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> خروج</button>
+            </div>
+        </header>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الـ QR Code</th>
+                        <th>اسم العميل</th>
+                        <th>الشركة / الوظيفة</th>
+                        <th>الرمز (UID)</th>
+                        <th>رابط الكارت</th>
+                    </tr>
+                </thead>
+                <tbody id="clients-table-body">
+                    <tr><td colspan="5" style="text-align:center;">جاري جلب البيانات السريّة...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+        // ⚠️ ضع بياناتك هنا ⚠️
+       const firebaseConfig = {
+  apiKey: "AIzaSyAfpew-RjS5kUjpRK6SGpkCpetrioLL2oE",
+  authDomain: "jus-tt-ap.firebaseapp.com",
+  databaseURL: "https://jus-tt-ap-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "jus-tt-ap",
+  storageBucket: "jus-tt-ap.firebasestorage.app",
+  messagingSenderId: "602186980260",
+  appId: "1:602186980260:web:940e78a048db2a656a3f31"
+};
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const authScreen = document.getElementById('auth-screen');
+        const archiveContent = document.getElementById('archive-content');
+        const loginForm = document.getElementById('admin-login-form');
+        const btnLoginSubmit = document.getElementById('btn-login-submit');
+
+        // تسجيل الدخول
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            btnLoginSubmit.innerText = "جاري التحقق...";
+            btnLoginSubmit.disabled = true;
+
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+
+            try {
+                // التحقق بيتم عبر سيرفرات فايربيز الآمنة
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                alert("بيانات الدخول غير صحيحة!");
+                btnLoginSubmit.innerText = "دخول آمن";
+                btnLoginSubmit.disabled = false;
+            }
+        });
+
+        // مراقبة حالة الدخول وجلب البيانات
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // المستخدم سجل دخول صحيح
+                authScreen.style.display = 'none';
+                archiveContent.style.display = 'block';
+                fetchClients(); // جلب الداتا بعد ما نتأكد إنه مسجل دخول
+            } else {
+                // مفيش مستخدم مسجل
+                authScreen.style.display = 'flex';
+                archiveContent.style.display = 'none';
+                btnLoginSubmit.innerText = "دخول آمن";
+                btnLoginSubmit.disabled = false;
+            }
+        });
+
+        // دالة جلب بيانات العملاء
+        async function fetchClients() {
+            const tableBody = document.getElementById('clients-table-body');
+            try {
+                const querySnapshot = await getDocs(collection(db, "users"));
+                
+                if(querySnapshot.empty) {
+                    tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">لا يوجد عملاء في الأرشيف.</td></tr>`;
+                    return;
+                }
+
+                let html = "";
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const uid = doc.id;
+                    const name = data.name || "لم يتم كتابة الاسم";
+                    const company = data.company || "لم يتم كتابة الشركة";
+                    const profileUrl = `https://jus-tt-ap.com/profile.html?id=${uid}`;
+                    
+                    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(profileUrl)}`;
+
+                    html += `
+                        <tr>
+                            <td><img src="${qrCodeUrl}" class="qr-img" alt="QR"></td>
+                            <td style="font-weight: 700;">${name}</td>
+                            <td style="color: var(--text-muted);">${company}<br><span style="font-size:12px">${data.title || ''}</span></td>
+                            <td><span class="uid-badge">${uid}</span></td>
+                            <td><a href="${profileUrl}" target="_blank" class="profile-link">${profileUrl}</a></td>
+                        </tr>
+                    `;
+                });
+                tableBody.innerHTML = html;
+            } catch (error) {
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: red;">حدث خطأ! راجع صلاحيات قاعدة البيانات.</td></tr>`;
+            }
+        }
+
+        // تسجيل الخروج للأدمن
+        document.getElementById('btn-admin-logout').addEventListener('click', () => {
+            signOut(auth);
+        });
+    </script>
+</body>
+</html>
