@@ -213,13 +213,14 @@
         </main>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+    // تم إضافة setDoc هنا للتعامل مع العملاء الجدد بمرونة
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-        // ⚠️ ضع بياناتك هنا ⚠️
-    const firebaseConfig = {
+    // ⚠️ ضع بيانات مشروعك هنا ⚠️
+   const firebaseConfig = {
   apiKey: "AIzaSyAfpew-RjS5kUjpRK6SGpkCpetrioLL2oE",
   authDomain: "jus-tt-ap.firebaseapp.com",
   databaseURL: "https://jus-tt-ap-default-rtdb.europe-west1.firebasedatabase.app",
@@ -229,72 +230,120 @@
   appId: "1:602186980260:web:940e78a048db2a656a3f31"
 };
 
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    let currentUserUid = null;
+    let avatarBase64 = "";
+    let coverBase64 = "";
 
-        let currentUID = null;
-        let base64Avatar = "";
-        let base64Cover = "";
-
-        function syncPreview() {
-            document.getElementById('p-name-view').innerText = document.getElementById('user-name').value.trim() || "اسم العميل";
-            document.getElementById('p-title-view').innerText = document.getElementById('user-title').value.trim() || "المسمى الوظيفي";
-            document.getElementById('p-company-view').innerText = document.getElementById('user-company').value.trim() || "اسم الشركة";
-            document.getElementById('p-bio-view').innerText = document.getElementById('user-bio').value.trim() || "النبذة الشخصية تظهر هنا بشكل أنيق ومتناسق...";
-            
-            const socials = ['whatsapp', 'instagram', 'tiktok', 'linkedin', 'twitter', 'snapchat', 'youtube'];
-            socials.forEach(id => {
-                const val = document.getElementById(`link-${id}`).value.trim();
-                const iconEl = document.getElementById(`pv-${id}`);
-                if(val) iconEl.style.display = 'flex';
-                else iconEl.style.display = 'none';
-            });
-        }
-
-        const allInputs = document.querySelectorAll('input[type="text"], textarea');
-        allInputs.forEach(input => { input.addEventListener('input', syncPreview); });
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUID = user.uid;
-                try {
-                    const docRef = doc(db, "users", currentUID);
-                    const docSnap = await getDoc(docRef);
-
-                    if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        document.getElementById('user-name').value = data.name || "";
-                        document.getElementById('user-title').value = data.title || "";
-                        document.getElementById('user-company').value = data.company || "";
-                        document.getElementById('user-bio').value = data.bio || "";
-                        base64Avatar = data.avatar || "";
-                        base64Cover = data.cover || "";
-
-                        if(base64Avatar) document.getElementById('p-avatar-view').src = base64Avatar;
-                        if(base64Cover) document.getElementById('p-cover-view').style.backgroundImage = `url(${base64Cover})`;
-
-                        if (data.links) {
-                            document.getElementById('link-whatsapp').value = data.links.whatsapp || "";
-                            document.getElementById('link-instagram').value = data.links.instagram || "";
-                            document.getElementById('link-tiktok').value = data.links.tiktok || "";
-                            document.getElementById('link-linkedin').value = data.links.linkedin || "";
-                            document.getElementById('link-twitter').value = data.links.twitter || "";
-                            document.getElementById('link-snapchat').value = data.links.snapchat || "";
-                            document.getElementById('link-youtube').value = data.links.youtube || "";
-                        }
-                        syncPreview();
-                    }
-                } catch (err) {
-                    console.error("Error fetching data:", err);
-                } finally {
-                    document.getElementById('screen-loader').style.display = 'none';
+    // 1️⃣ دالة تحويل الصور مع فحص الحجم (الحد الأقصى 1 ميجا)
+    function handleImageUpload(inputId, type) {
+        const input = document.getElementById(inputId);
+        if (!input) return; // عشان لو الحقل مش موجود الكود ميقفش
+        
+        input.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                // منع رفع صورة أكبر من 1 ميجابايت لتفادي كراش الداتابيز
+                if (file.size > 1048487) {
+                    alert("⚠️ حجم الصورة كبير جداً! الحد الأقصى 1 ميجابايت. يرجى اختيار صورة أصغر.");
+                    input.value = ""; // تفريغ الحقل
+                    return;
                 }
-            } else {
-                window.location.href = "login.html";
+
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    if(type === 'avatar') avatarBase64 = reader.result;
+                    if(type === 'cover') coverBase64 = reader.result;
+                };
+                reader.readAsDataURL(file);
             }
         });
+    }
 
-        // 🌟 دالة السحر: ضغط الصور تلقائياً لتقليل حجمها قبل الحفظ 🌟
-        const compressImage = (file, maxWidth = 800
+    // تأكد إن الـ IDs دي نفس اللي في ملف الـ HTML عندك
+    handleImageUpload('avatar', 'avatar'); // استبدل 'avatar' بـ ID حقل الصورة الشخصية
+    handleImageUpload('cover', 'cover');   // استبدل 'cover' بـ ID حقل الغلاف
+
+    // 2️⃣ مراقبة تسجيل الدخول مع ضمان إخفاء شاشة التحميل دائماً
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            currentUserUid = user.uid;
+            try {
+                const docRef = doc(db, "users", currentUserUid);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    
+                    // توزيع البيانات على الحقول (تأكد من مطابقة الـ IDs)
+                    if(document.getElementById('name')) document.getElementById('name').value = data.name || "";
+                    if(document.getElementById('title')) document.getElementById('title').value = data.title || "";
+                    if(document.getElementById('company')) document.getElementById('company').value = data.company || "";
+                    
+                    if(document.getElementById('whatsapp')) document.getElementById('whatsapp').value = data.whatsapp || "";
+                    if(document.getElementById('instagram')) document.getElementById('instagram').value = data.instagram || "";
+                    if(document.getElementById('tiktok')) document.getElementById('tiktok').value = data.tiktok || "";
+                    if(document.getElementById('x')) document.getElementById('x').value = data.x || "";
+                    if(document.getElementById('snapchat')) document.getElementById('snapchat').value = data.snapchat || "";
+                    if(document.getElementById('youtube')) document.getElementById('youtube').value = data.youtube || "";
+                    
+                    // الاحتفاظ بالصور القديمة لو العميل مرفعش صور جديدة
+                    if(data.avatar) avatarBase64 = data.avatar;
+                    if(data.cover) coverBase64 = data.cover;
+                } else {
+                    console.log("عميل جديد، سيتم إنشاء ملفه عند الحفظ.");
+                }
+            } catch (error) {
+                console.error("خطأ أثناء جلب البيانات:", error);
+            } finally {
+                // السطر السحري اللي هيقفل شاشة التحميل مهما حصل
+                const loader = document.getElementById('loader'); // استبدل 'loader' بـ ID شاشة التحميل عندك
+                if(loader) loader.style.display = 'none';
+            }
+        } else {
+            // طرد المستخدم لصفحة الدخول لو مش مسجل
+            window.location.href = "login.html";
+        }
+    });
+
+    // 3️⃣ حفظ البيانات بذكاء (إنشاء أو دمج)
+    const saveBtn = document.getElementById('save-btn'); // استبدل 'save-btn' بـ ID زرار الحفظ
+    if(saveBtn) {
+        saveBtn.addEventListener('click', async () => {
+            saveBtn.innerHTML = 'جاري الحفظ...';
+            saveBtn.disabled = true;
+
+            const updatedData = {
+                name: document.getElementById('name') ? document.getElementById('name').value : "",
+                title: document.getElementById('title') ? document.getElementById('title').value : "",
+                company: document.getElementById('company') ? document.getElementById('company').value : "",
+                whatsapp: document.getElementById('whatsapp') ? document.getElementById('whatsapp').value : "",
+                instagram: document.getElementById('instagram') ? document.getElementById('instagram').value : "",
+                tiktok: document.getElementById('tiktok') ? document.getElementById('tiktok').value : "",
+                x: document.getElementById('x') ? document.getElementById('x').value : "",
+                snapchat: document.getElementById('snapchat') ? document.getElementById('snapchat').value : "",
+                youtube: document.getElementById('youtube') ? document.getElementById('youtube').value : "",
+                avatar: avatarBase64,
+                cover: coverBase64,
+                updatedAt: new Date()
+            };
+
+            try {
+                const docRef = doc(db, "users", currentUserUid);
+                // استخدام setDoc مع { merge: true } يحل مشكلة No document to update نهائياً
+                await setDoc(docRef, updatedData, { merge: true });
+                
+                alert("تم حفظ البيانات الفخمة بنجاح!");
+            } catch (error) {
+                console.error("خطأ أثناء الحفظ:", error);
+                alert("حدث خطأ أثناء الحفظ! يرجى المحاولة مرة أخرى.");
+            } finally {
+                saveBtn.innerHTML = 'حفظ البيانات الفخمة';
+                saveBtn.disabled = false;
+            }
+        });
+    }
+</script>
